@@ -1,0 +1,928 @@
+/* ===== MAIN LAYOUT ===== */
+.main {
+  max-width: 1600px;
+  margin: 0;
+  padding: 24px 8px 64px 8px;
+  position: relative;
+  z-index: 1;
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.3;                 /* ← видимость 30% */
+    pointer-events: none;         /* чтобы не мешали кликам по ссылкам/кнопкам */
+    z-index: 0;
+}
+
+/* Ручка — слева снизу */
+body::before {
+    background-image: url('../images/pen.png');
+    background-position: left bottom;
+    left: 0;
+    bottom: 0;
+    width: 280px;                 /* ← размер декора */
+    height: 620px;
+    transform: rotate(-30deg);        /* ← поворот на 30° */
+    transform-origin: center center; /* вокруг центра (по умолчанию так и есть) */
+}
+
+/* Рабочий стол — справа сверху */
+body::after {
+    background-image: url('../images/nout.png');
+    background-position: right bottom;
+    right: 0;
+    bottom: 0;                    /* ← отступ под фиксированный хедер */
+    width: 1000px;
+    height: 1000px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #172938;
+  border-bottom: 2px solid #b8bcc4;
+  /* светло-серая полоска снизу */
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  padding: 14px 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+  transition: opacity 0.2s;
+}
+
+.header-brand:hover {
+  opacity: 0.9;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  color: #f0ede8;
+  text-transform: uppercase;
+}
+
+.header-divider {
+  width: 1px;
+  height: 36px;
+  background-color: #4a5568;
+  margin: 0 4px;
+}
+
+.header-subtitle {
+  font-size: 13px;
+  font-style: italic;
+  color: #a8b2c4;
+  line-height: 1.3;
+  letter-spacing: 0.3px;
+}
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: #172938;
+  color: #e8e6e3;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-top: 80px;
+  /* отступ под фиксированный хедер */
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 450px 1fr 450px;
+  gap: 8px;
+  align-items: start;
+}
+
+.main-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+/* ===== ДВЕ КАРТОЧКИ РЯДОМ ВНУТРИ КОЛОНКИ ===== */
+.main-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.main-row>.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ===== CARD (папка / лист) ===== */
+.card {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  padding: 24px 22px 28px;
+  color: #1e1a16;
+  border: none;
+  box-shadow: none;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Индивидуальные фоны для карточек */
+/* ===== КАРТОЧКА "О ИГРЕ" ===== */
+.card-about {
+  background-image: url('../images/1.png');
+  background-size: 100% 100%;
+  /* картинка ровно под блок 375×425 */
+  background-repeat: no-repeat;
+  background-position: center;
+
+  box-sizing: border-box;
+  width: 450px;
+  height: 550px;
+  padding: 34px 26px 24px 34px;
+  /* внутренние отступы от края "бумаги" */
+
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  color: #1e1a16;
+  flex-shrink: 0;
+  /* чтобы колонка не сжимала карточку */
+}
+
+/* Заголовок внутри карточки */
+.card-about .card-title {
+  font-size: 20px;
+  margin-left: 40px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* Фото внутри — вписываем в отведённую высоту */
+.card-about-media {
+  margin: 30px 10px 20px;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.card-about-media img {
+  width: 350px;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+}
+
+/* Текст — мелкий, чтобы уместился */
+.card-about .card-text {
+  font-size: 14px;
+  line-height: 1.45;
+  margin-left: 8px;
+  margin-bottom: 8px;
+  color: #1e1a16;
+
+  background-color: rgba(245, 237, 218, 0.55);
+  /* полупрозрачный бежевый */
+  padding: 6px 6px;
+  border-radius: 4px;
+}
+
+/* ===== КАРТОЧКА "ЦЕЛИ" ===== */
+.card-goal {
+  background-image: url('../images/7.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  box-sizing: border-box;
+  width: 100%;
+  /* растягивается по всей центральной колонке */
+  padding: 16px;
+  /* ← отступы со всех сторон по 16px */
+
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  color: #1e1a16;
+}
+
+.card-goal .card-title-icon {
+  display: inline-flex;
+  width: 32px;
+  /* было 24px */
+  height: 32px;
+  /* было 24px */
+  flex-shrink: 0;
+}
+
+.card-goal .card-title-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: #2c241e;
+}
+
+.card-goal .card-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  /* было 14px */
+  margin-left: 30px;
+  padding-bottom: 4px;
+  /* было 6px */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1e1a16;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-goal .card-text {
+  font-size: 16px;
+  /* было 15px */
+  line-height: 1.45;
+  margin-bottom: 8px;
+  margin-left: 40px;
+  color: #2c241e;
+}
+
+.card-goal .card-subtitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 10px 0 6px 40px;
+  /* было 16px 0 8px */
+  color: #2c241e;
+}
+
+/* ===== ВЕРДИКТЫ — 3 КОЛОНКИ ===== */
+.card-goal .verdicts {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin: 12px 40px 16px 40px;
+}
+
+.card-goal .verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: none;
+  /* ← убирает полосу */
+  border-left: none;
+  /* ← на всякий случай, если где-то осталось */
+}
+
+/* Цветная плашка с иконкой и заголовком */
+.card-goal .verdict-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #dbd8d8;
+  min-height: 44px;
+}
+
+/* Круглая иконка внутри плашки */
+.card-goal .verdict-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+
+  background-color: #dbd8d8;
+  /* ← белый круг */
+  border: none;
+  /* цвет символа внутри круга */
+}
+
+/* Цвет символа внутри круга = цвет плашки */
+.card-goal .verdict-yes .verdict-mark {
+  color: #b02a26;
+}
+
+.card-goal .verdict-no .verdict-mark {
+  color: #1f3242;
+}
+
+.card-goal .verdict-maybe .verdict-mark {
+  color: #1e1a16;
+}
+
+/* Цвета плашек */
+.card-goal .verdict-yes .verdict-head {
+  background-color: #b02a26;
+  color: #dbd8d8;
+}
+
+.card-goal .verdict-no .verdict-head {
+  background-color: #1f3242;
+  color: #dbd8d8;
+}
+
+.card-goal .verdict-maybe .verdict-head {
+  background-color: #d9b878;
+  color: #1e1a16;
+}
+
+/* Описание под плашкой */
+.card-goal .verdict-text {
+  font-size: 15px;
+  line-height: 1.4;
+  color: #2c241e;
+}
+
+/* Цвета для каждой плашки */
+.card-goal .verdict-yes .verdict-head {
+  background-color: #b02a26;
+  /* красный */
+}
+
+.card-goal .verdict-yes .verdict-mark {
+  color: #b02a26;
+  /* иконка той же гаммы */
+}
+
+.card-goal .verdict-no .verdict-head {
+  background-color: #1f3242;
+  /* тёмно-синий */
+}
+
+.card-goal .verdict-no .verdict-mark {
+  color: #1f3242;
+}
+
+.card-goal .verdict-maybe .verdict-head {
+  background-color: #d9b878;
+  /* бежевый */
+  color: #1e1a16;
+  /* тёмный текст на бежевом */
+}
+
+.card-goal .verdict-maybe .verdict-mark {
+  color: #1e1a16;
+}
+
+.card-goal .warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  padding: 8px 10px;
+  margin: 10px 40px 50px 40px;
+  background-color: rgba(198, 40, 40, 0.12);
+  border: 3px solid rgba(198, 40, 40, 0.4);
+  border-radius: 8px;
+}
+
+.card-goal .warning p {
+  font-size: 15px;
+  line-height: 1.35;
+  color: #3a1a1a;
+}
+
+.card-goal .warning-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  stroke: #c62828;
+  margin-top: 15px;
+}
+
+/* ===== КАРТОЧКА "репутация" ===== */
+.card-reputation {
+  background-image: url('../images/3.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  width: 380px;
+  /* было 100% — стало уже */
+  min-height: 220px;
+  /* было 260px */
+  padding: 20px 18px 20px 40px;
+  /* было 24px 22px */
+  margin-left: 20px;
+}
+
+.card-reputation .card-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  /* прогал между заголовком и текстом */
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1e1a16;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-reputation .card-title-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.card-reputation .card-title-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: #2c241e;
+}
+
+.card-reputation .card-text {
+  font-size: 16px;
+  line-height: 2.5;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  color: #1e1a16;
+}
+
+.card-reputation .rep-meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2px;
+  margin-left: 40px;
+}
+
+.card-reputation .rep-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.card-reputation .rep-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.card-reputation .rep-dot.is-filled {
+  background-color: #f9a825;
+  border-color: #c88a1a;
+}
+
+.card-reputation .rep-score {
+  font-weight: 700;
+  font-size: 18px;
+  color: #2c241e;
+}
+
+.card-blindspots {
+  background-image: url('../images/9.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 340px;
+  padding: 24px 40px 24px 40px;
+  /* ← отступы слева/справа 40px */
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  color: #1e1a16;
+}
+
+/* Заголовок */
+.card-blindspots .card-title {
+  font-size: 22px;
+  /* было 20px */
+  font-weight: 700;
+  margin-left: 20px;
+  margin-top: 55px;
+  margin-bottom: 10px;
+  /* ← отступ между заголовком и текстом */
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  color: #1e1a16;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-blindspots .card-title-icon {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.card-blindspots .card-title-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: #2c241e;
+}
+
+/* Основной текст */
+.card-blindspots .card-text {
+  font-size: 17px;
+  /* было 15px */
+  line-height: 1.8;
+  margin: 0px 40px 10px 10px;
+  color: #2c241e;
+}
+
+/* Подзаголовок «На что обратить внимание:» */
+.card-blindspots .card-subtitle {
+  font-size: 17px;
+  /* было 15px */
+  font-weight: 700;
+  margin: 15px 40px 10px 40px;
+  /* было 16px 0 8px */
+  color: #2c241e;
+}
+
+/* Список */
+.card-blindspots .card-list {
+  padding-left: 20px;
+  margin-top: 8px;
+  list-style: none;
+}
+
+.card-blindspots .card-list li {
+  font-size: 17px;
+  /* было 15px */
+  margin-bottom: 6px;
+  /* было 4px */
+  position: relative;
+  padding-left: 14px;
+  color: #2c241e;
+  line-height: 1.5;
+}
+
+.card-blindspots .card-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #5a4a3a;
+  font-weight: 700;
+}
+
+
+.card-progress {
+  background-image: url('../images/7.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 500px;
+  padding: 24px 22px;
+  border: none;
+  box-shadow: none;
+  overflow: hidden;
+  color: #1e1a16;
+
+  display: flex;
+  /* ← добавь */
+  flex-direction: column;
+}
+
+.card-progress .card-title {
+  font-size: 22px;
+  /* ← размер заголовка */
+  font-weight: 700;
+
+  margin-left: 30px;
+  /* ← сдвиг заголовка вправо */
+  margin-bottom: 16px;
+  /* ← отступ между заголовком и первым шагом */
+  margin-top: 0;
+
+  padding-bottom: 6px;
+  /* ← отступ от линии под заголовком */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  /* линия под заголовком */
+  color: #1e1a16;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* ← расстояние между иконкой и текстом */
+}
+
+/* ----- Иконка заголовка ----- */
+.card-progress .card-title-icon {
+  display: inline-flex;
+  width: 40px;
+  /* ← ширина иконки */
+  height: 40px;
+  /* ← высота иконки (должна совпадать с шириной) */
+  flex-shrink: 0;
+}
+
+.card-progress .card-title-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: #2c241e;
+  stroke-width: 2.1;
+  /* ← толщина линии иконки */
+}
+
+/* ----- Список шагов ----- */
+.card-progress .steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* ← отступ между шагами */
+  margin: 0 20px 20px 40px;
+  list-style: none;
+}
+
+/* ----- Один шаг ----- */
+.card-progress .step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  /* ← расстояние между номером и текстом */
+}
+
+/* ----- Круг с номером ----- */
+.card-progress .step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  /* ← диаметр круга с номером */
+  height: 28px;
+  border-radius: 50%;
+  background-color: #2c241e;
+  color: #f0ede8;
+  font-weight: 700;
+  font-size: 14px;
+  /* ← размер цифры в круге */
+  flex-shrink: 0;
+  margin-top: 2px;
+  margin-left: -50px;
+}
+
+/* ----- Текст шага ----- */
+.card-progress .step-body {
+  flex: 1;
+}
+
+.card-progress .step-title {
+  font-weight: 700;
+  font-size: 17px;
+  /* ← размер заголовка шага */
+  color: #1e1a16;
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.card-progress .step-text {
+  font-size: 15px;
+  /* ← размер описания шага */
+  color: #3a3028;
+  line-height: 1.4;
+  /* ← межстрочный интервал описания */
+}
+
+
+/* ===== ЗАГОЛОВКИ КАРТОЧЕК ===== */
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: #1e1a16;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+  padding-bottom: 6px;
+}
+
+.card-title-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.card-title-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: #2c241e;
+}
+
+.card-subtitle {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 16px 0 8px;
+  color: #2c241e;
+}
+
+.card-text {
+  font-size: 15px;
+  line-height: 1.55;
+  margin-bottom: 10px;
+  color: #2c241e;
+}
+
+.card-list {
+  padding-left: 18px;
+  margin-top: 6px;
+}
+
+.card-list li {
+  font-size: 15px;
+  margin-bottom: 4px;
+  position: relative;
+  padding-left: 12px;
+  color: #2c241e;
+}
+
+.card-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #5a4a3a;
+  font-weight: 700;
+}
+
+/* ===== ХОД РАССЛЕДОВАНИЯ ===== */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.step-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #2c241e;
+  color: #f0ede8;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.step-body {
+  flex: 1;
+}
+
+.step-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1e1a16;
+  margin-bottom: 2px;
+}
+
+.step-text {
+  font-size: 14px;
+  color: #3a3028;
+  line-height: 1.4;
+}
+
+/* ===== КНОПКА НАЧАТЬ ===== */
+.main-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+  padding-bottom: 24px;
+}
+
+.main-actions .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 80%;
+  /* ← 2/3 экрана */
+  max-width: 100%;
+  /* защита от переполнения */
+
+  padding: 18px 40px;
+  background-color: #1f4d2b;
+  /* ← тёмно-зелёный */
+  color: #f0ede8;
+  font-family: 'Georgia', serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  border: 2px solid #357a44;
+  /* чуть светлее фон — «обводка» */
+  border-radius: 12px;
+  /* ← закруглённые края */
+
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.main-actions .button:hover {
+  background-color: #2a6a3a;
+  /* светлее при наведении */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.main-actions .button:active {
+  transform: scale(0.99);
+}
+
+/* ===== АДАПТИВ (базовый) ===== */
+@media (max-width: 1100px) {
+  .main-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .main-col:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 800px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-col:last-child {
+    grid-column: span 1;
+  }
+
+  .header-brand {
+    padding: 10px 16px;
+  }
+
+  .header-title {
+    font-size: 18px;
+  }
+
+  .header-subtitle {
+    font-size: 11px;
+  }
+
+  .main {
+    padding: 16px;
+  }
+
+  .paper-note-doubt {
+    position: static;
+    margin: 10px auto;
+    transform: rotate(-1deg);
+    max-width: 100%;
+  }
+
+  .main-actions .button {
+    padding: 14px 40px;
+    font-size: 20px;
+    width: 100%;
+  }
+}

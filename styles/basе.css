@@ -1,0 +1,127 @@
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background-color: #172938;
+    color: #e8e6e3;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 80px;
+    /* отступ под фиксированный хедер */
+}
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.3;                 /* ← видимость 30% */
+    pointer-events: none;         /* чтобы не мешали кликам по ссылкам/кнопкам */
+    z-index: 0;
+}
+
+/* Ручка — слева снизу */
+body::before {
+    background-image: url('../images/pen.png');
+    background-position: left bottom;
+    left: 0;
+    bottom: 0;
+    width: 280px;                 /* ← размер декора */
+    height: 620px;
+    transform: rotate(30deg);        /* ← поворот на 30° */
+    transform-origin: center center; /* вокруг центра (по умолчанию так и есть) */
+}
+
+/* Рабочий стол — справа сверху */
+body::after {
+    background-image: url('../images/nout.png');
+    background-position: right bottom;
+    right: 0;
+    top: 80px;                    /* ← отступ под фиксированный хедер */
+    width: 500px;
+    height: 500px;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+    text-decoration: none;
+}
+
+
+ul,
+ol {
+    list-style: none;
+}
+
+/* ===== HEADER ===== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #172938;
+    border-bottom: 2px solid #b8bcc4;
+    /* светло-серая полоска снизу */
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    padding: 14px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 20px;
+    transition: opacity 0.2s;
+    text-decoration: none;
+}
+
+.header-brand:hover {
+    opacity: 0.9;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    color: #f0ede8;
+    text-transform: uppercase;
+}
+
+.header-divider {
+    width: 1px;
+    height: 36px;
+    background-color: #4a5568;
+    margin: 0 4px;
+}
+
+.header-subtitle {
+    font-size: 13px;
+    font-style: italic;
+    color: #a8b2c4;
+    line-height: 1.3;
+    letter-spacing: 0.3px;
+}
