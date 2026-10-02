@@ -702,6 +702,94 @@ body {
     place-items: center;
     font: italic 700 12px Georgia, serif;
 }
+/* ===== ДОБАВКИ ДЛЯ СКРИПТА (первое впечатление, SIFT) ===== */
+.ibtn:disabled {
+    cursor: default;
+    opacity: .45;
+}
+
+.ibtn.is-picked:disabled {
+    opacity: 1;
+}
+
+.intuition-hint {
+    margin: 14px 0 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #4d4738;
+}
+
+.p-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #2b2a27;
+}
+
+.p-chips[hidden] {
+    display: none;
+}
+
+.p-chips button {
+    padding: 6px 12px;
+    font: inherit;
+    font-size: 13px;
+    color: #2b2a27;
+    background: transparent;
+    border: 1px solid #8c8470;
+}
+.p-chips button:hover {
+    border-color: #2b2a27;
+    background: rgba(0, 0, 0, .05);
+}
+
+.p-chips button.is-picked {
+    background: var(--red, #b3262b);
+    border-color: var(--red, #b3262b);
+}
+
+.sift-step.is-done {
+    color: #2f5a3a;
+    background: #d7e3c6;
+    border-color: #3f6e4c;
+}
+
+.sift-step.is-done b::after {
+    content: " ✓";
+}
+
+/* кнопка «Дальше: к допросам» */
+.btn-next-step {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 22px;
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(#c92f34, var(--red-dark, #8e1c21));
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
+    transition: transform .15s, filter .15s;
+}
+
+.btn-next-step:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn-next-step span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.btn-next-step[hidden] {
+    display: none;
+}
 
 /* ===== АДАПТИВ ===== */
 @media (max-width: 1100px) {

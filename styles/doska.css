@@ -1,0 +1,682 @@
+/* ==========================================================
+   ДОСКА РАССЛЕДОВАНИЯ — стили экрана
+   Подключается ПОСЛЕ delo.css (берёт оттуда палитру, шапку,
+   сайдбар, .delo и т.д.)
+   ========================================================== */
+
+/* ===== СЕТКА: доска | правая колонка ===== */
+.doska-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* ===== ДОСКА ===== */
+.board {
+    position: relative;
+    min-height: 720px;
+    border: 2px solid #3a4048;
+    border-radius: 4px;
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, .05), transparent 55%),
+        radial-gradient(ellipse at 80% 90%, rgba(0, 0, 0, .35), transparent 60%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, .012) 0 2px, transparent 2px 6px),
+        #1f242b;
+    box-shadow: inset 0 0 0 6px #171b20, inset 0 0 40px rgba(0, 0, 0, .6), 0 10px 26px rgba(0, 0, 0, .45);
+    overflow: hidden;
+}
+
+/* нити между узлами */
+.b-strings {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.b-strings path {
+    fill: none;
+    stroke: #a51e25;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .55));
+}
+
+.b-strings circle {
+    fill: #c8282e;
+    stroke: #6e1014;
+    stroke-width: 1;
+}
+
+/* ===== ОБЩЕЕ ДЛЯ УЗЛОВ И ЗАПИСОК ===== */
+.b-node,
+.b-scrap,
+.b-photo {
+    position: absolute;
+    z-index: 2;
+}
+
+.b-node {
+    box-sizing: border-box;
+    padding: 16px 18px 14px;
+    color: var(--ink, #222);
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, .4), transparent 60%),
+        linear-gradient(#efe7d3, #e4d9bf);
+    border-radius: 2px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .5);
+    cursor: pointer;
+    transition: box-shadow .2s, transform .2s;
+}
+
+.b-node:hover {
+    transform: translateY(-2px);
+}
+
+.b-node.is-active {
+    box-shadow: 0 0 0 2px #e0a030, 0 10px 22px rgba(0, 0, 0, .55);
+}
+
+/* скотч */
+.tape::before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    width: 80px;
+    height: 20px;
+    background: rgba(214, 196, 150, .75);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+    transform: translateX(-50%) rotate(-3deg);
+}
+
+.b-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 10px;
+    font: 700 19px/1.2 Georgia, 'Times New Roman', serif;
+}
+
+.b-head svg {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.b-head small {
+    display: block;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+/* пунктирное поле внутри узла */
+.b-field {
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #4d4738;
+    border: 1px dashed #a89c80;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, .22);
+}
+
+.b-hint {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #5e584a;
+}
+
+.b-input,
+.b-text {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    font: inherit;
+    font-family: Georgia, serif;
+    font-size: 14.5px;
+    color: var(--ink, #222);
+    background: rgba(255, 255, 255, .45);
+    border: 1px dashed #a89c80;
+    border-radius: 3px;
+    resize: none;
+}
+
+.b-text {
+    min-height: 62px;
+    font-size: 13.5px;
+    line-height: 1.4;
+}
+
+.b-input:focus,
+.b-text:focus {
+    outline: 2px solid #e0a030;
+    outline-offset: 1px;
+    border-style: solid;
+}
+
+/* метка «Обязательно / Желательно / Заполнено» */
+.b-req {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: #9b2026;
+}
+
+.b-req i {
+    flex: 0 0 15px;
+    width: 15px;
+    height: 15px;
+    display: grid;
+    place-items: center;
+    font: 700 10px Arial, sans-serif;
+    font-style: normal;
+    color: #fff;
+    background: #b3262b;
+    border-radius: 50%;
+}
+
+.b-req.is-soft {
+    color: #5e584a;
+}
+
+.b-req.is-soft i {
+    background: #6b6553;
+}
+
+.b-req.is-done {
+    color: #2f5a3a;
+}
+
+.b-req.is-done i {
+    background: #3f6e4c;
+}
+
+/* ===== ВЫБОР УЛИК (Данные / Поддержка) ===== */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chips:not(:empty) {
+    margin-bottom: 8px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px 4px 9px;
+    font-size: 12px;
+    color: #2b2a27;
+    background: #f6f1e4;
+    border: 1px solid #c9bd9f;
+    border-radius: 12px;
+}
+
+.chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.chip button {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    font: 700 13px/1 Arial, sans-serif;
+    color: #6b6553;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.chip button:hover {
+    color: #fff;
+    background: #b3262b;
+}
+
+.picker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pick-add {
+    flex: 0 0 26px;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font: 700 18px/1 Arial, sans-serif;
+    color: #fff;
+    background: #5e584a;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pick-add:hover:not(:disabled) {
+    background: #2b2a27;
+}
+
+.pick-add:disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.pick-select {
+    flex: 1;
+    min-width: 0;
+    padding: 5px 6px;
+    font: inherit;
+    font-size: 12.5px;
+    color: #4d4738;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.pick-select:focus {
+    outline: 2px solid #e0a030;
+}
+
+/* ===== ПОЗИЦИИ УЗЛОВ НА ДОСКЕ ===== */
+.n-thesis   { left: 35%; top: 26px;  width: 36%; }
+.n-data     { left: 4%;  top: 175px; width: 33%; }
+.n-qual     { left: 41%; top: 205px; width: 21%; transform: rotate(-1.5deg); }
+.n-qual:hover { transform: rotate(-1.5deg) translateY(-2px); }
+.n-warrant  { left: 66%; top: 168px; width: 31%; }
+.n-support  { left: 21%; top: 435px; width: 33%; }
+.n-rebuttal { left: 58%; top: 420px; width: 39%; }
+
+/* ===== КВАЛИФИКАТОР ===== */
+.n-qual {
+    text-align: center;
+}
+
+.n-qual .b-head {
+    justify-content: center;
+    font-size: 15px;
+    text-align: left;
+}
+
+.n-qual .b-hint {
+    margin: 0 0 10px;
+    font-size: 12.5px;
+}
+
+.p-select {
+    padding: 6px 12px;
+    font: 700 20px 'Comic Sans MS', 'Segoe Print', cursive;
+    color: #2b2a27;
+    text-align: center;
+    background: transparent;
+    border: 2px solid #2b2a27;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.p-select:focus {
+    outline: 2px solid #e0a030;
+}
+
+/* ===== ОПРОВЕРЖЕНИЕ (адвокат дьявола) ===== */
+.n-rebuttal {
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, .35), transparent 60%),
+        linear-gradient(#f2d9d2, #e9c4ba);
+    box-shadow: 0 0 0 1px #c98d82, 0 8px 18px rgba(0, 0, 0, .5);
+}
+
+.n-rebuttal.is-active {
+    box-shadow: 0 0 0 2px #e0a030, 0 10px 22px rgba(0, 0, 0, .55);
+}
+
+.n-rebuttal .b-head svg {
+    color: #b3262b;
+}
+
+.n-rebuttal .b-text {
+    background: rgba(255, 255, 255, .5);
+}
+
+/* ===== ЗАПИСКИ, ФОТО, СТИКЕР ===== */
+.b-scrap {
+    padding: 14px 18px;
+    font-family: 'Segoe Print', 'Comic Sans MS', cursive;
+    color: #2b2a27;
+    background: #d9cba8;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .5);
+    clip-path: polygon(0 4%, 6% 0, 14% 3%, 25% 0, 38% 4%, 52% 1%, 66% 4%, 80% 0, 92% 3%, 100% 1%,
+            99% 30%, 100% 62%, 98% 100%, 86% 97%, 72% 100%, 58% 96%, 44% 100%, 30% 97%, 16% 100%, 4% 96%, 0 98%, 2% 64%, 0 34%);
+}
+
+.s-logic {
+    left: 2.5%;
+    top: 26px;
+    width: 160px;
+    font-size: 16px;
+    line-height: 1.3;
+    transform: rotate(-7deg);
+}
+
+.s-sticky {
+    left: 82%;
+    top: 610px;
+    width: 120px;
+    padding: 16px 14px;
+    font-size: 13px;
+    line-height: 1.3;
+    text-align: center;
+    background: #e3c95f;
+    clip-path: none;
+    transform: rotate(-6deg);
+}
+
+/* подсказка внизу доски */
+.b-tip {
+    position: absolute;
+    left: 25%;
+    top: 640px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 46%;
+    padding: 12px 18px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: #2b2a27;
+    background: #e3d8bd;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .45);
+    transition: background .2s;
+}
+
+.b-tip svg {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+}
+
+.b-tip.is-ok {
+    background: #d7e5c4;
+    color: #2f4a1c;
+}
+
+/* полароид */
+.b-photo {
+    left: 1.5%;
+    top: 415px;
+    width: 17%;
+    padding: 8px 8px 12px;
+    background: #e8e0cc;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .5);
+    transform: rotate(-4deg);
+}
+
+.b-photo-img {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #3a3a36;
+}
+
+.b-photo-img svg,
+.b-photo-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+}
+
+.b-photo figcaption {
+    margin-top: 8px;
+    font: 13px/1.25 'Segoe Print', 'Comic Sans MS', cursive;
+    color: #2b2a27;
+    text-align: center;
+}
+
+/* ===== ПРАВАЯ КОЛОНКА ===== */
+.b-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-paper {
+    position: relative;
+    padding: 18px 20px 20px;
+    color: var(--ink, #222);
+    background:
+        radial-gradient(ellipse at 20% 0%, rgba(255, 255, 255, .35), transparent 60%),
+        linear-gradient(#efe8d6, #e6dcc4);
+    border-radius: 3px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .5);
+}
+
+.side-paper .tape-r {
+    position: absolute;
+    top: -8px;
+    right: 18px;
+    width: 70px;
+    height: 20px;
+    background: rgba(214, 196, 150, .78);
+    transform: rotate(6deg);
+}
+
+.side-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 12px;
+    padding-bottom: 12px;
+    font: 700 18px/1.2 Georgia, serif;
+    border-bottom: 1px solid #cbbf9f;
+}
+
+.side-icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: #1d1f22;
+    border-radius: 50%;
+}
+
+.side-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.side-text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* предупреждение о незаполненных узлах */
+.warn-card {
+    display: flex;
+    gap: 14px;
+    padding: 18px 20px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #f4e3e1;
+    background: linear-gradient(#7e1a1f, #5e1216);
+    border: 1px solid #c2353b;
+    border-radius: 3px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .45);
+    transition: background .2s, border-color .2s;
+}
+
+.warn-card .warn-i {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    font: 700 18px Arial, sans-serif;
+    color: #7e1a1f;
+    background: #f4e3e1;
+    border-radius: 50%;
+}
+
+.warn-card ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+}
+
+.warn-card.is-ok {
+    color: #e3f0dc;
+    background: linear-gradient(#2f5a3a, #22432b);
+    border-color: #4f8a5e;
+}
+
+.warn-card.is-ok .warn-i {
+    color: #2f5a3a;
+    background: #e3f0dc;
+}
+
+.warn-card.shake {
+    animation: shake .4s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: none; }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-3px); }
+}
+
+/* кнопка «Вынести вердикт» */
+.btn-verdict {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    height: 62px;
+    font: 20px Georgia, serif;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(#c92f34, var(--red-dark, #8e1c21));
+    border: 1px solid #d9575c;
+    border-radius: 4px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .25);
+    cursor: pointer;
+    transition: transform .15s, filter .15s;
+}
+
+.btn-verdict svg {
+    width: 30px;
+    height: 30px;
+}
+
+.btn-verdict:hover:not(.is-disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn-verdict.is-disabled {
+    color: #a3a5a8;
+    background: linear-gradient(#5a5e63, #474a4f);
+    border-color: #6b6f74;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* справка о модели Тулмина */
+.help-card {
+    padding: 18px 20px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #c9ccd0;
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid var(--line, #3a4048);
+    border-radius: 3px;
+}
+
+.help-card b {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #fff;
+}
+
+.help-card b i {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    font: italic 700 13px Georgia, serif;
+    color: #1d1f22;
+    background: #e8e6e3;
+    border-radius: 50%;
+}
+
+.help-card p {
+    margin: 0;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1250px) {
+    .doska-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .b-side {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* на узких экранах доска превращается в обычный список узлов */
+@media (max-width: 1000px) {
+    .board {
+        min-height: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        padding: 26px 20px;
+    }
+
+    .b-node,
+    .b-tip {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: auto;
+        transform: none;
+    }
+
+    .n-thesis,
+    .b-tip {
+        grid-column: 1 / -1;
+    }
+
+    .b-strings,
+    .b-scrap,
+    .b-photo {
+        display: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .board,
+    .b-side {
+        grid-template-columns: 1fr;
+    }
+}

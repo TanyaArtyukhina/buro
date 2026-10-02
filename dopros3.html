@@ -124,23 +124,18 @@
                     <div class="dop-top">
                         <figure class="witness">
                             <div class="witness-photo">
-                                <img src="images/witness.jpg" alt="Свидетель">
-                                <svg viewBox="0 0 100 100" aria-hidden="true">
-                                    <rect width="100" height="100" fill="#6b6658" />
-                                    <circle cx="52" cy="38" r="17" fill="#2b2a27" />
-                                    <path d="M14 100c2-28 18-40 38-40s36 12 38 40z" fill="#22211f" />
-                                </svg>
+                                <img src="images/witness3.jpg" alt="Свидетель">
+                                
                             </div>
                             <figcaption>
                                 <b>Свидетель</b>
-                                <span>Соседка, 21 год</span>
+                                <span>Подозреваемый, кв. 12</span>
                             </figcaption>
                         </figure>
 
                         <div class="dop-right">
                             <div class="bubble" id="bubble">
-                                «Я точно видел, как он вчера вечером вышел из подъезда с велосипедом.
-                                Да и весь двор об этом говорит. Думаю, тут и так всё ясно.»
+                                «Частный сыщик без погон будет меня допрашивать? Я здесь жить собираюсь, а не оправдываться. Спрашивайте по делу, у меня и так времени мало.»
                             </div>
 
                             <div class="action-row">
@@ -240,11 +235,14 @@
 
                 <!-- КНОПКИ -->
                 <div class="bottom-buttons">
+                      <a class="btn-back" href="./dopros2.html">
+                        <span>←</span> Назад
+                    </a>
                     <button class="btn-review" id="btnReview" type="button">
                         <span>↻</span> Пересмотреть
                     </button>
-                    <a class="btn-next" href="./dopros2.html">
-                        <span>→</span> Следующее дело
+                    <a class="btn-next" href="./kartoteka.html">
+                        <span>→</span> Перейти к картотеке
                     </a>
                 </div>
             </aside>
@@ -259,15 +257,15 @@
 
         /* ===== ДАННЫЕ ДЕМО-СВИДЕТЕЛЯ ===== */
         const PHRASES = [
-            { id: 0, text: '«Да и весь двор об этом говорит»', fallacy: 'majority' },
-            { id: 1, text: '«Я точно видел, как он вчера вечером…»' },
-            { id: 2, text: '«Вы же понимаете, это же очевидно!»' },
-            { id: 3, text: '«Если он не виноват, то почему он молчит?»' },
-            { id: 4, text: '«Такие вещи часто случаются, это нормально»' }
+            { id: 0, text: '«Я здесь жить собираюсь, а не оправдываться»' },
+            { id: 1, text: '«Спрашивайте по делу, у меня и так времени мало»' },
+            { id: 2, text: '«Частный сыщик без погон будет меня допрашивать?»' },
+            { id: 3, text: '«Мало ли что люди про меня говорят»' },
+            { id: 4, text: '«Я человек занятой, у меня работа посменная»' }
         ];
-        const CORRECT_PHRASE = 0;
-        const CORRECT_FALLACY = 'majority';
-        const HONEST_PART = '«Ладно, сам я лица не разглядел. Видел только, что вечером у подъезда кто-то возился с велосипедом…»';
+        const CORRECT_PHRASE = 2;
+        const CORRECT_FALLACY = 'ad_hominem';
+        const HONEST_PART = '«В ночь на пятницу я был на смене в аэропорту, с восьми вечера до восьми утра. Табель можете запросить у начальника смены.»';
 
         // id ошибки → название; trick — типаж из блокнота
         const FALLACIES = {
@@ -299,10 +297,10 @@
         const gameState = () => JSON.parse(localStorage.getItem('kartoteka') || 'null') ||
             { hoursSpent: 0, got: ['note'], reviewed: false, selected: 'oleg' };
         const saveGame = s => localStorage.setItem('kartoteka', JSON.stringify(s));
-        let dop = JSON.parse(localStorage.getItem('dopros') || 'null') || { paid: false, solved: false };
-        const saveDop = () => localStorage.setItem('dopros', JSON.stringify(dop));
+        let dop = JSON.parse(localStorage.getItem('dopros3') || 'null') || { paid: false, solved: false };
+        const saveDop = () => localStorage.setItem('dopros3', JSON.stringify(dop));
 
-        let chosenPhrase = 0;   // в макете по умолчанию выбрана первая фраза
+        let chosenPhrase = 0;
         let chosenFallacy = '';
 
         /* ===== ЭЛЕМЕНТЫ ===== */

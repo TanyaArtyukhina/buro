@@ -1,0 +1,589 @@
+/* ==========================================================
+   ДОПРОС — стили экрана
+   Подключается ПОСЛЕ delo.css (берёт оттуда палитру, шапку,
+   сайдбар, .panel, .stamp-label, .right, .bar, .stat и т.д.)
+   ========================================================== */
+
+/* промежуток между папкой и правой колонкой */
+.delo-grid {
+    gap: 26px;
+}
+
+/* ===== ПАПКА (тот же фон 10.png) ===== */
+.dop-paper {
+    position: relative;
+    min-height: 640px;                 /* высота папки — меняй по вкусу */
+    padding: 105px 70px 70px 90px;     /* отступы, чтобы текст лежал внутри папки */
+    background-color: transparent;
+    background-image: url("../images/10.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--ink);
+}
+
+
+
+/* ===== ВЕРХНЯЯ ЧАСТЬ: СВИДЕТЕЛЬ + РЕПЛИКА ===== */
+.dop-top {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 22px;
+    margin-top: 18px;
+}
+
+/* карточка свидетеля */
+.witness {
+    margin: 0;
+    padding: 10px 10px 12px;
+    background: #f1ebdc;
+    border: 1px solid #c9bd9f;
+    border-radius: 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .18);
+}
+
+.witness-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1.05;
+    overflow: hidden;
+    background: #555;
+}
+
+.witness-photo img,
+.witness-photo svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(.85) contrast(1.05);
+}
+
+.witness figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 10px;
+}
+
+.witness figcaption b {
+    font-size: 17px;
+}
+
+.witness figcaption span {
+    font-size: 13px;
+    color: #555;
+}
+
+/* реплика свидетеля */
+.bubble {
+    position: relative;
+    padding: 20px 24px;
+    font-size: 20px;
+    line-height: 1.45;
+    background: #f1ebdc;
+    border: 1px solid #c9bd9f;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .15);
+}
+
+/* «хвостик» реплики, указывающий на свидетеля */
+.bubble::before {
+    content: "";
+    position: absolute;
+    left: -11px;
+    top: 28px;
+    width: 18px;
+    height: 18px;
+    background: #f1ebdc;
+    border-left: 1px solid #c9bd9f;
+    border-bottom: 1px solid #c9bd9f;
+    transform: rotate(45deg);
+}
+
+.bubble.is-honest {
+    background: #eef1e0;
+    border-color: #8da26a;
+    font-style: italic;
+}
+
+.bubble.is-honest::before {
+    background: #eef1e0;
+    border-color: #8da26a;
+}
+
+/* строка: «Возражение!» + стоимость */
+.action-row {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    margin-top: 16px;
+}
+
+.btn-objection {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 66px;
+    padding: 0 20px;
+    font: inherit;
+    font-family: Arial, 'Helvetica Neue', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(#c92f34, var(--red-dark));
+    border: 0;
+    border-radius: 5px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .25);
+    cursor: pointer;
+    transition: transform .15s, filter .15s;
+}
+
+.btn-objection:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn-objection:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.btn-objection:disabled {
+    background: #8a8a82;
+    box-shadow: none;
+    cursor: default;
+}
+
+.obj-icon {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    color: var(--red);
+    background: #fff;
+    border-radius: 50%;
+}
+
+/* стикер со стоимостью */
+.cost-sticker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    background: #ddd0b3;
+    border: 1px dashed #a89c80;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .2);
+    transform: rotate(1deg);
+}
+
+.cost-sticker svg {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.cost-title {
+    font-size: 13px;
+}
+
+.cost-value {
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.cost-sub {
+    font-size: 11px;
+    color: #555;
+}
+
+/* ===== ВЫБОР ФРАЗЫ И ОШИБКИ ===== */
+.dop-question {
+    margin: 26px 0 12px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.dop-choose {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 18px;
+}
+
+/* список фраз */
+.phrases {
+    position: relative;
+    padding: 22px 14px 14px;
+    background: #f1ebdc;
+    border: 1px solid #c9bd9f;
+    border-radius: 6px;
+}
+
+/* цитатная «закладка» сверху слева */
+.phrases::before {
+    content: "\201C\201D";
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    padding: 2px 12px 0;
+    font: 700 22px/1.2 Georgia, serif;
+    color: #4a4a3f;
+    background: #d4c8aa;
+    border-radius: 3px 3px 0 0;
+}
+
+.phrase {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+    padding: 9px 12px;
+    font-size: 14px;
+    line-height: 1.25;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.phrase:hover {
+    background: rgba(0, 0, 0, .05);
+}
+
+.phrase.is-picked {
+    background: #efd5d0;
+}
+
+.phrase input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.radio {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #8c8470;
+    border-radius: 50%;
+    background: #fff;
+    position: relative;
+}
+
+.phrase.is-picked .radio {
+    border-color: var(--red);
+}
+
+.phrase.is-picked .radio::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    background: var(--red);
+    border-radius: 50%;
+}
+
+/* блок «Логическая ошибка» */
+.error-box {
+    padding: 16px;
+    background: #f1ebdc;
+    border: 1px solid #c9bd9f;
+    border-radius: 6px;
+}
+
+.error-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.error-head svg {
+    width: 24px;
+    height: 24px;
+    color: #222;
+}
+
+.error-select {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    background-color: #e7dfc9;
+    border: 1px solid #b8ad96;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.error-select:focus {
+    outline: 2px solid #e0a030;
+    outline-offset: 1px;
+}
+
+/* подсказка / результат проверки */
+.hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 12px;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: #444;
+    background: #d9d1bd;
+    border-radius: 4px;
+    transition: background .2s;
+}
+
+.hint-i {
+    flex: 0 0 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    font: italic 700 12px Georgia, serif;
+    color: #fff;
+    background: #777;
+    border-radius: 50%;
+}
+
+.hint.is-ok {
+    background: #dbe8c9;
+    color: #2f4a1c;
+}
+
+.hint.is-ok .hint-i {
+    background: #3f7a4f;
+}
+
+.hint.is-bad {
+    background: #f0d3cf;
+    color: #7a1c20;
+}
+
+.hint.is-bad .hint-i {
+    background: var(--red);
+}
+
+/* ===== БЛОКНОТ УЛОВОК (справа) ===== */
+.notebook {
+    position: relative;
+    padding: 34px 20px 20px;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .4);
+}
+
+/* пружинка сверху */
+.notebook::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    right: 14px;
+    height: 22px;
+    background:
+        radial-gradient(circle at 50% 50%, transparent 3px, #3a3a3a 3.5px, #3a3a3a 5px, transparent 5.5px) 0 0 / 14px 22px repeat-x;
+}
+
+.notebook-title {
+    margin: 0 0 14px;
+    font-size: 22px;
+}
+
+.tricks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.trick {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 26px 12px 12px;
+    text-align: left;
+    font: inherit;
+    color: var(--ink);
+    background: #e7dcc2;
+    border: 2px solid #cdbf9f;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+}
+
+.trick:hover {
+    transform: translateY(-2px);
+    background: #efe5cc;
+}
+
+.trick.is-picked {
+    background: #f4e6d6;
+    border-color: var(--red);
+}
+
+.trick svg {
+    width: 26px;
+    height: 26px;
+}
+
+.trick-body b {
+    display: block;
+    font-size: 15px;
+    line-height: 1.15;
+}
+
+.trick-body small {
+    display: block;
+    margin-top: 4px;
+    font-size: 11.5px;
+    line-height: 1.25;
+    color: #555;
+}
+
+.trick-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    font-size: 20px;
+    transform: translateY(-50%);
+}
+
+/* ===== ТЕКУЩИЕ ПОКАЗАТЕЛИ ===== */
+.panel-stats--titled {
+    display: block;          
+    padding: 14px 0 16px;
+}
+
+.stats-title {
+    padding: 0 20px 10px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stat-num {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* ===== НИЖНИЕ КНОПКИ ===== */
+.bottom-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.btn-review,
+.btn-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 58px;
+    font: inherit;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, transform .15s;
+}
+
+.btn-review {
+    color: #4a3b22;
+    background: #cdb88f;
+    border: 1px solid #a8956b;
+}
+
+.btn-review:hover {
+    background: #c0a97c;
+}
+
+.btn-next {
+    color: #fff;
+    background: transparent;
+    border: 2px solid #e8e6e3;
+}
+
+.btn-next:hover {
+    background: rgba(255, 255, 255, .08);
+}
+
+.btn-review span,
+.btn-next span {
+    font-size: 20px;
+    line-height: 1;
+}
+/* ===== КНОПКА «НАЗАД» ===== */
+.btn-back {
+    grid-column: 1 / -1;          /* на всю ширину над двумя кнопками */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 46px;
+    font: inherit;
+    font-size: 15px;
+    color: var(--muted);
+    text-decoration: none;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s;
+}
+
+.btn-back:hover {
+    color: #e8e6e3;
+    border-color: #e8e6e3;
+    background: rgba(255, 255, 255, .06);
+}
+
+.btn-back span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1100px) {
+    .dop-paper {
+        padding: 90px 50px 60px 60px;
+    }
+}
+
+@media (max-width: 800px) {
+    .dop-paper {
+        padding: 70px 26px 40px 32px;
+        background-size: cover;
+    }
+
+    .dop-top,
+    .dop-choose {
+        grid-template-columns: 1fr;
+    }
+
+    .witness {
+        max-width: 220px;
+    }
+
+    .action-row {
+        flex-direction: column;
+    }
+
+    .bubble::before {
+        display: none;
+    }
+
+    .tricks {
+        grid-template-columns: 1fr;
+    }
+}

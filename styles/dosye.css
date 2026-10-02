@@ -1,0 +1,581 @@
+/* ==========================================================
+   ДОСЬЕ НА САМОГО СЕБЯ — стили экрана
+   Подключается ПОСЛЕ delo.css (берёт оттуда палитру, шапку,
+   сайдбар, .delo и т.д.)
+   ========================================================== */
+
+:root {
+    --gold: #d9a43a;
+    --gold-dark: #b8862a;
+    --ds-green: #3f6e4c;
+    --ds-red: #b3262b;
+    --ds-line: #cbbf9f;
+}
+
+/* ===== СЕТКА ===== */
+.dosye-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* ===== БОЛЬШОЙ ЛИСТ ===== */
+.ds-paper {
+    position: relative;
+    padding: 28px 30px 30px;
+    color: var(--ink, #222);
+    background:
+        radial-gradient(ellipse at 15% 0%, rgba(255, 255, 255, .45), transparent 55%),
+        linear-gradient(#efe8d6, #e6dcc4);
+    border-radius: 3px;
+    box-shadow:
+        4px 5px 0 #d3c7ab,
+        8px 9px 0 rgba(160, 145, 110, .55),
+        0 12px 26px rgba(0, 0, 0, .5);
+}
+
+/* загнутый уголок */
+.ds-paper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, #16202b 50%, #d6cbb0 50%);
+}
+
+/* скрепка */
+.ds-clip {
+    position: absolute;
+    top: -18px;
+    right: 40px;
+    width: 24px;
+    height: 56px;
+    color: #9aa0a6;
+    filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, .35));
+}
+
+.ds-title {
+    margin: 0;
+    font: 700 38px/1.1 Georgia, 'Times New Roman', serif;
+}
+
+.ds-lead {
+    margin: 6px 0 22px;
+    font-size: 15px;
+    color: #3b372d;
+}
+
+/* красный штамп-цитата */
+.ds-stamp {
+    position: absolute;
+    top: 26px;
+    right: 90px;
+    padding: 8px 14px;
+    font: 700 12.5px/1.3 'Courier New', monospace;
+    color: #a51e25;
+    text-align: center;
+    text-transform: uppercase;
+    border: 2px solid #a51e25;
+    outline: 1px solid #a51e25;
+    outline-offset: 3px;
+    transform: rotate(-6deg);
+    opacity: .85;
+}
+
+/* плашка «дело ещё не закрыто» */
+.ds-empty {
+    padding: 40px 30px;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    background: rgba(255, 255, 255, .3);
+    border: 1px dashed #a89c80;
+    border-radius: 3px;
+}
+
+.ds-empty[hidden] {
+    display: none;
+}
+
+.ds-empty a {
+    display: inline-flex;
+    margin-top: 14px;
+    padding: 12px 22px;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(#c92f34, var(--red-dark, #8e1c21));
+    border-radius: 4px;
+}
+
+/* ===== СЕТКА КАРТОЧЕК ===== */
+.ds-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.ds-cards[hidden] {
+    display: none;
+}
+
+.ds-card {
+    padding: 16px 18px 18px;
+    background: rgba(255, 255, 255, .28);
+    border: 1px solid var(--ds-line);
+    border-radius: 3px;
+}
+
+.ds-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 12px;
+    font: 700 16px/1.25 Georgia, serif;
+}
+
+.ds-head svg {
+    flex: 0 0 26px;
+    width: 26px;
+    height: 26px;
+}
+
+.ds-text {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+}
+
+/* ===== КАК БЫЛО НА САМОМ ДЕЛЕ ===== */
+.truth-photo {
+    position: relative;
+    margin: 14px 0 0;
+    padding: 8px;
+    background: #e8e0cc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+    transform: rotate(-2deg);
+}
+
+.truth-img {
+    position: relative;
+    height: 110px;
+    overflow: hidden;
+    background: #3a3a36;
+}
+
+.truth-img svg,
+.truth-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+}
+
+.truth-stamp {
+    position: absolute;
+    right: 16px;
+    bottom: 18px;
+    padding: 4px 10px;
+    font: 700 14px Georgia, serif;
+    color: #c8282e;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, .85);
+    border: 2px solid #c8282e;
+    transform: rotate(-10deg);
+}
+
+/* ===== СРАВНЕНИЕ ===== */
+.cmp {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+}
+
+.cmp > div + div {
+    border-left: 1px solid var(--ds-line);
+}
+
+.cmp-label {
+    font-size: 13px;
+    color: #4d4738;
+}
+
+.pill {
+    display: inline-block;
+    margin: 8px 0 8px;
+    padding: 7px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 18px;
+}
+
+.pill--confirmed    { background: var(--ds-green); }
+.pill--refuted      { background: var(--ds-red); }
+.pill--insufficient { background: #4b5a6e; }
+.pill--none         { background: #8a8578; }
+
+.cmp-p {
+    font: 700 18px Arial, sans-serif;
+}
+
+.cmp-src {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    color: #6b6553;
+}
+
+.cmp-change {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    border-top: 1px solid var(--ds-line);
+}
+
+.cmp-change i {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    font: 700 13px Arial, sans-serif;
+    font-style: normal;
+    color: #fff;
+    background: #2b2a27;
+    border-radius: 50%;
+}
+
+/* ===== УВЕРЕННОСТЬ: КОЛЬЦА И ГРАФИК ===== */
+.rings {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 8px;
+    text-align: center;
+}
+
+.ring {
+    width: 78px;
+    height: 78px;
+}
+
+.ring .bg { fill: none; stroke: #d6cdb6; stroke-width: 8; }
+.ring .fg { fill: none; stroke-width: 8; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.ring text { font: 700 18px Arial, sans-serif; fill: #2b2a27; }
+
+.ring-label {
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: #4d4738;
+}
+
+.rings-arrow {
+    font-size: 22px;
+    color: #5e584a;
+}
+
+.calib {
+    margin: 10px 0 0;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    border-radius: 3px;
+}
+
+.calib.is-ok  { background: #dbe8c9; color: #2f4a1c; }
+.calib.is-mid { background: #f1e3c2; color: #6b4d12; }
+.calib.is-bad { background: #f0d3cf; color: #7a1c20; }
+
+.mini-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.mini-chart .grid { stroke: var(--ds-line); stroke-width: 1; }
+.mini-chart .axis { font: 10px Arial, sans-serif; fill: #5e584a; }
+.mini-chart .line { fill: none; stroke: var(--ds-green); stroke-width: 2; }
+.mini-chart .pt   { fill: var(--ds-green); }
+.mini-chart .empty { font: 12px Georgia, serif; fill: #6b6553; }
+
+.mini-caption {
+    margin: 2px 0 0;
+    font-size: 11.5px;
+    color: #4d4738;
+    text-align: center;
+}
+
+/* ===== СПИСКИ: УЛОВКИ / СЛЕПЫЕ ПЯТНА / SIFT ===== */
+.ds-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ds-list li {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 12px;
+    padding: 9px 0;
+}
+
+.ds-list li + li {
+    border-top: 1px solid var(--ds-line);
+}
+
+.ds-list b {
+    display: block;
+    font-size: 13.5px;
+}
+
+.ds-list small {
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: #5e584a;
+}
+
+.mark {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    font: 700 13px Arial, sans-serif;
+    border-radius: 50%;
+}
+
+.mark--ok   { color: #fff; background: var(--ds-green); }
+.mark--bad  { color: #fff; background: var(--ds-red); }
+.mark--warn { color: #fff; background: var(--gold); }
+.mark--na   { color: #8a8578; border: 2px dashed #b9ae94; }
+.mark--open { border: 2px solid #5e584a; }
+
+.ds-count {
+    margin-left: auto;
+    padding: 2px 9px;
+    font: 700 12px Arial, sans-serif;
+    color: #2b2a27;
+    background: #ddd0b3;
+    border-radius: 10px;
+}
+
+/* ===== ПРАВАЯ КОЛОНКА ===== */
+.ds-side {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ds-sum {
+    padding: 16px 18px;
+    color: #e8e6e3;
+    background: rgba(255, 255, 255, .03);
+    border: 1px solid var(--line, #3a4048);
+    border-radius: 3px;
+}
+
+.ds-sum h2 {
+    margin: 0 0 8px;
+    padding-bottom: 10px;
+    font-size: 15px;
+    border-bottom: 1px solid var(--line, #3a4048);
+}
+
+.ds-sum-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 0;
+    font-size: 13px;
+    color: #c9ccd0;
+}
+
+.ds-sum-row b {
+    color: #fff;
+}
+
+.ds-sum-row b.up   { color: #8fd19e; }
+.ds-sum-row b.down { color: #f08a8e; }
+
+.ds-note {
+    position: relative;
+    padding: 22px 20px;
+    font: 15px/1.35 'Segoe Print', 'Comic Sans MS', cursive;
+    color: #2b2a27;
+    background: #d9cba8;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .5);
+    transform: rotate(-3deg);
+}
+
+.ds-note::after {
+    content: "";
+    display: block;
+    width: 70%;
+    height: 3px;
+    margin: 10px 0 0 auto;
+    background: #b3262b;
+    border-radius: 2px;
+    transform: rotate(-4deg);
+}
+
+.btn-next-case,
+.btn-replay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 58px;
+    font: 18px Georgia, serif;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform .15s, filter .15s, background .2s;
+}
+
+.btn-next-case {
+    color: #fff;
+    background: linear-gradient(#c92f34, var(--red-dark, #8e1c21));
+    border: 1px solid #d9575c;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .25);
+}
+
+.btn-next-case:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.btn-next-case.is-disabled {
+    color: #a3a5a8;
+    background: linear-gradient(#5a5e63, #474a4f);
+    border-color: #6b6f74;
+    box-shadow: none;
+    pointer-events: none;
+}
+
+.btn-replay {
+    color: #e8e6e3;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid #5a5e63;
+}
+
+.btn-replay:hover {
+    background: rgba(255, 255, 255, .1);
+}
+
+.btn-next-case span,
+.btn-replay span {
+    font-size: 22px;
+    line-height: 1;
+}
+
+/* ===== МОДАЛЬНОЕ ОКНО (повтор дела) ===== */
+.ds-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: rgba(8, 12, 18, .72);
+}
+
+.ds-modal[hidden] {
+    display: none;
+}
+
+.ds-modal-card {
+    width: min(480px, 100%);
+    padding: 28px 30px 24px;
+    color: var(--ink, #222);
+    background: linear-gradient(#efe8d6, #e6dcc4);
+    border-radius: 3px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
+}
+
+.ds-modal-card h3 {
+    margin: 0 0 10px;
+    font: 700 24px Georgia, serif;
+}
+
+.ds-modal-card p {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.5;
+}
+
+.ds-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.ds-modal-actions button {
+    flex: 1;
+    height: 46px;
+    font: inherit;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.m-cancel {
+    color: #4a3b22;
+    background: #cdb88f;
+    border: 1px solid #a8956b;
+}
+
+.m-ok {
+    color: #fff;
+    background: linear-gradient(#c92f34, var(--red-dark, #8e1c21));
+    border: 0;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1350px) {
+    .ds-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1100px) {
+    .dosye-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ds-side {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ds-note {
+        transform: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .ds-cards,
+    .ds-side {
+        grid-template-columns: 1fr;
+    }
+
+    .ds-stamp {
+        position: static;
+        display: inline-block;
+        margin-bottom: 16px;
+        transform: rotate(-3deg);
+    }
+
+    .ds-paper {
+        padding: 24px 18px;
+    }
+}

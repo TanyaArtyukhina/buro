@@ -281,30 +281,211 @@
     </main>
 
     <script>
-        // Таймер первого впечатления
-        const TOTAL = 60;                       // секунд (поменяй на 60, если нужна минута)
+        /* ===== НАСТРОЙКИ ===== */
+        const FIRST_TIME = 60;          // секунд на интуитивный ответ (по механике — 15)
+        const TOTAL_HOURS = 8;          // часов на дело
+        const START_REP = 5;
+        const MAX_REP = 10;
+        const CASE_ID = 3;
+
+        // кнопки интуиции → вердикты (те же значения, что на экране «Вердикт»)
+        const CHOICE_MAP = {yes: 'confirmed', no: 'refuted', maybe: 'insufficient'};
+        const CHOICE_NAME = {confirmed: '«Верю»', refuted: '«Не верю»', insufficient: '«Недостаточно данных»'};
+
+        // улики дела (те же id, что в kartoteka.html) — для панели «Надёжность улик»
+        const EVIDENCE = [
+            {id: 'note', rel: 1, start: true},
+            {id: 'chat', rel: 2, start: true},
+            {id: 'alina_t', rel: 3, fromDopros: 'dopros'},
+            {id: 'vera_t', rel: 3, fromDopros: 'dopros2'},
+            {id: 'oleg_t', rel: 3, fromDopros: 'dopros3'},
+            {id: 'tabel', rel: 4},
+            {id: 'video', rel: 4},
+            {id: 'journal', rel: 4}
+        ];
+        const SIFT_KEYS = ['stop', 'source', 'others', 'trace'];
+
+        /* ===== СОСТОЯНИЕ ===== */
+        const read = key => JSON.parse(localStorage.getItem(key) || 'null');
+        const load = (key, def) => Object.assign({}, def, read(key) || {});
+        const save = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+
+        // кампания: создаётся при первом открытии дела
+        const campaign = load('campaign', {
+            reputation: START_REP, currentCase: CASE_ID, carryHours: 0,
+            stats: {correct: 0, wrong: 0, judicialErrors: 0, closed: []}
+        });
+        if (!read('campaign')) save('campaign', campaign);
+
+        // часы и улики — общие с допросами и картотекой
+        const game = load('kartoteka', {hoursSpent: 0, got: ['note'], reviewed: false, selected: 'oleg'});
+        game.sift = Object.assign({stop: false, source: false, others: false, trace: false}, game.sift);
+
+        // этот экран: первое впечатление
+        const delo = load('delo', {firstImpression: null, timedOut: false});
+        const saveDelo = () => save('delo', delo);
+
+        const verdict = read('verdict') || {};
+        const board = read('doska') || {};
+
+        /* ===== ЭЛЕМЕНТЫ ===== */
         const num = document.getElementById('timerNum');
         const ring = document.getElementById('ring');
+        const buttons = document.querySelectorAll('.ibtn');
+        const intuition = document.querySelector('.intuition');
         const C = 2 * Math.PI * 52;
         ring.style.strokeDasharray = C;
-        let left = TOTAL, timer = setInterval(tick, 1000);
 
-        function tick() {
-            left--;
-            num.textContent = Math.max(left, 0);
-            ring.style.strokeDashoffset = C * (1 - left / TOTAL);
-            if (left <= 0) clearInterval(timer);
+        // подсказка и выбор уверенности под кнопками интуиции (создаются скриптом)
+        const hint = document.createElement('p');
+        hint.className = 'intuition-hint';
+        intuition.appendChild(hint);
+
+        const chips = document.createElement('div');
+        chips.className = 'p-chips';
+        chips.hidden = true;
+        chips.innerHTML = '<span>Насколько уверен?</span>' +
+            [50, 60, 70, 80, 90, 100].map(p => `<button type="button" data-p="${p}">${p}%</button>`).join('');
+        intuition.appendChild(chips);
+
+        // кнопка «Дальше» — появляется после первого впечатления
+        const nextBtn = document.createElement('a');
+        nextBtn.className = 'btn-next-step';
+        nextBtn.href = './dopros.html';
+        nextBtn.innerHTML = 'Дальше: к допросам <span>→</span>';
+        nextBtn.hidden = true;
+        intuition.appendChild(nextBtn);
+
+        /* ===== ШАПКА ===== */
+        function renderHeader() {
+            const rep = campaign.reputation;
+            document.querySelectorAll('.rep-dots i').forEach((d, i) => d.classList.toggle('on', i < rep));
+            document.querySelector('.hstat:not(.hstat-hours) .hstat-value').textContent = `${rep}/${MAX_REP}`;
+            const left = Math.max(0, TOTAL_HOURS - (game.hoursSpent || 0));
+            document.querySelector('.hstat-hours .hstat-value').textContent = left + ' ч.';
         }
 
-        // Выбор интуиции
-        document.querySelectorAll('.ibtn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.ibtn').forEach(b => b.classList.remove('is-picked'));
-                btn.classList.add('is-picked');
-                clearInterval(timer);
-                localStorage.setItem('firstImpression', btn.dataset.choice);
+        /* ===== ПАНЕЛЬ SIFT (автоотметка по действиям игрока) ===== */
+        function renderSift() {
+            const steps = document.querySelectorAll('.sift-step');
+            const firstOpen = SIFT_KEYS.findIndex(k => !game.sift[k]);
+            steps.forEach((s, i) => {
+                const done = !!game.sift[SIFT_KEYS[i]];
+                s.classList.toggle('is-done', done);
+                s.classList.toggle('is-active', i === firstOpen);
+                s.title = done ? 'Шаг выполнен' : 'Шаг ещё не выполнен — попадёт в разбор';
             });
+        }
+
+        /* ===== ПОКАЗАТЕЛИ ===== */
+        function renderStats() {
+            const solved = key => !!(read(key) || {}).solved;
+            const got = EVIDENCE.filter(e => e.start || (game.got || []).includes(e.id) ||
+                (e.fromDopros ? solved(e.fromDopros) : false));
+            const avg = got.length ? got.reduce((s, e) => s + e.rel, 0) / got.length : 0;
+
+            const stats = document.querySelectorAll('.panel-stats .stat');
+            // надёжность улик
+            stats[0].querySelector('.bar i').style.width = (avg / 4 * 100) + '%';
+            stats[0].querySelector('.stat-sub').textContent =
+                avg >= 3.5 ? 'Высокая' : avg >= 2.5 ? 'Средняя' : avg > 0 ? 'Низкая' : 'Нет улик';
+            // стоимость действия: на этом экране действия бесплатные
+            stats[1].querySelector('.stat-dash').textContent = '0';
+            // уверенность P: с экрана вердикта, иначе — квалификатор доски, иначе первое впечатление
+            const P = verdict.P ?? board.P ?? (delo.firstImpression && delo.firstImpression.P);
+            stats[2].querySelector('.stat-dash').textContent = P != null ? P : '—';
+        }
+
+        /* ===== ПЕРВОЕ ВПЕЧАТЛЕНИЕ ===== */
+        let left = FIRST_TIME;
+        let timer = null;
+
+        function drawTimer() {
+            num.textContent = Math.max(left, 0);
+            ring.style.strokeDashoffset = C * (1 - left / FIRST_TIME);
+        }
+
+        function lockButtons() {
+            buttons.forEach(b => {b.disabled = true;});
+        }
+
+        function showChoice() {
+            const fi = delo.firstImpression;
+            buttons.forEach(b => b.classList.toggle('is-picked', fi && CHOICE_MAP[b.dataset.choice] === fi.choice));
+            lockButtons();
+            chips.hidden = false;
+            nextBtn.hidden = false;
+            chips.querySelectorAll('button').forEach(b =>
+                b.classList.toggle('is-picked', fi.P === +b.dataset.p));
+            hint.textContent = `Первое впечатление записано: ${CHOICE_NAME[fi.choice]}` +
+                (fi.P ? `, уверенность ${fi.P}%.` : '. Отметь, насколько ты уверен.') +
+                ' В конце дела сравним его с итоговым вердиктом.';
+        }
+
+        function startTimer() {
+            hint.textContent = `У тебя ${FIRST_TIME} секунд на интуитивный ответ. Потом начнётся расследование.`;
+            drawTimer();
+            timer = setInterval(() => {
+                left--;
+                drawTimer();
+                if (left <= 0) {
+                    clearInterval(timer);
+                    delo.timedOut = true;
+                    saveDelo();
+                    lockButtons();
+                    hint.textContent = 'Время вышло — первое впечатление не зафиксировано. Это тоже попадёт в разбор.';
+                    nextBtn.hidden = false;
+                }
+            }, 1000);
+        }
+
+        buttons.forEach(btn => btn.addEventListener('click', () => {
+            if (delo.firstImpression || delo.timedOut) return;
+            clearInterval(timer);
+            delo.firstImpression = {
+                choice: CHOICE_MAP[btn.dataset.choice],
+                P: null,
+                seconds: FIRST_TIME - left          // за сколько секунд ответил
+            };
+            saveDelo();
+            showChoice();
+            renderStats();
+        }));
+
+        chips.addEventListener('click', e => {
+            const b = e.target.closest('button');
+            if (!b || !delo.firstImpression || verdict.closed) return;
+            delo.firstImpression.P = +b.dataset.p;
+            saveDelo();
+            showChoice();
+            renderStats();
         });
+
+        /* ===== «ЗАКРЫТЬ ДЕЛО» ===== */
+        // доступно сразу (предвзятость текущего момента): сэкономленные часы выгодны, но рискованны
+        document.querySelector('.btn-close').addEventListener('click', () => {
+            if (verdict.closed) {location.href = './dosye.html'; return;}
+            const leftH = Math.max(0, TOTAL_HOURS - (game.hoursSpent || 0));
+            const ok = confirm(`Перейти к вердикту прямо сейчас?\n\nОсталось ${leftH} ч. Неизрасходованные часы перейдут ` +
+                'в следующее дело, но несобранные улики могут привести к ошибке.');
+            if (ok) location.href = './verdict.html';
+        });
+
+        /* ===== СТАРТ ===== */
+        renderHeader();
+        renderSift();
+        renderStats();
+
+        if (delo.firstImpression) {
+            left = 0; drawTimer(); num.textContent = '✓';
+            showChoice();
+        } else if (delo.timedOut) {
+            left = 0; drawTimer();
+            lockButtons();
+            hint.textContent = 'Время на первое впечатление вышло — ответ не зафиксирован.';
+        } else {
+            startTimer();
+        }
     </script>
 </body>
 
