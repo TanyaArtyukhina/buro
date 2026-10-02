@@ -22,38 +22,7 @@ body {
     /* отступ под фиксированный хедер */
 }
 
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.3;                 /* ← видимость 30% */
-    pointer-events: none;         /* чтобы не мешали кликам по ссылкам/кнопкам */
-    z-index: 0;
-}
 
-/* Ручка — слева снизу */
-body::before {
-    background-image: url('../images/pen.png');
-    background-position: left bottom;
-    left: 0;
-    bottom: 0;
-    width: 280px;                 /* ← размер декора */
-    height: 620px;
-    transform: rotate(30deg);        /* ← поворот на 30° */
-    transform-origin: center center; /* вокруг центра (по умолчанию так и есть) */
-}
-
-/* Рабочий стол — справа сверху */
-body::after {
-    background-image: url('../images/nout.png');
-    background-position: right bottom;
-    right: 0;
-    top: 80px;                    /* ← отступ под фиксированный хедер */
-    width: 500px;
-    height: 500px;
-}
 
 img {
     max-width: 100%;

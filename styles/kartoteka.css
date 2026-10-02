@@ -1,0 +1,421 @@
+/* ==========================================================
+   КАРТОТЕКА — стили экрана
+   Подключается ПОСЛЕ delo.css (берёт оттуда палитру, шапку,
+   сайдбар, .panel, .footnote, .stamp-label, .right и т.д.)
+   ========================================================== */
+
+/* ===== ПАПКА (тот же фон 10.png, что и на экране «Дело») ===== */
+.kart-paper {
+    position: relative;
+    min-height: 620px;                 /* высота папки — меняй по вкусу */
+    padding: 110px 80px 80px 95px;     /* отступы, чтобы текст лежал внутри папки */
+    background-color: transparent;
+    background-image: url("../images/10.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--ink);
+}
+
+.kart-body {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 26px;
+    margin-top: 20px;
+}
+
+.kart-subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #4a4a3f;
+    margin-bottom: 10px;
+}
+
+.kart-subtitle--line {
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid #b8ad96;
+}
+
+/* ===== СПИСОК СВИДЕТЕЛЕЙ ===== */
+.kart-people {
+    padding-right: 20px;
+    border-right: 1px solid #b8ad96;
+}
+
+.person {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: left;
+    font: inherit;
+    color: var(--ink);
+    background: #e7dcc2;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .18);
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+}
+
+.person:hover {
+    transform: translateX(3px);
+    background: #efe5cc;
+}
+
+.person.is-active {
+    background: #f4e6d6;
+    border-color: var(--red);
+}
+
+.person-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.person-info b {
+    font-size: 14px;
+    line-height: 1.15;
+}
+
+.person-info small {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.2;
+}
+
+.person-info em {
+    margin-top: 3px;
+    font-size: 11px;
+    color: var(--red-dark);
+}
+
+/* аватар-заглушка (вместо фото) */
+.avatar {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #e8e6e3;
+    background: #2a3b4b;
+    border: 2px solid #f4efe4;
+    border-radius: 3px;
+    filter: grayscale(.4);
+}
+
+.avatar--big {
+    flex-basis: 78px;
+    width: 78px;
+    height: 78px;
+    font-size: 26px;
+    transform: rotate(-2deg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
+}
+
+/* ===== ДОСЬЕ ===== */
+.dossier-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #b8ad96;
+}
+
+.dossier-name {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.dossier-role {
+    margin: 4px 0 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+.type-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 12px;
+    letter-spacing: .5px;
+    color: var(--red-dark);
+    border: 1.5px solid var(--red);
+    border-radius: 3px;
+    transform: rotate(-1.5deg);
+}
+
+.dossier-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding-top: 14px;
+}
+
+.metric {
+    padding: 10px 12px;
+    background: #e7dcc2;
+    border-radius: 4px;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.metric-val {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.metric-val i {
+    flex: 0 0 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #999;
+}
+
+/* экспертиза: чем выше, тем зеленее */
+.metric-val.lvl-high i { background: #3f7a4f; }
+.metric-val.lvl-mid i  { background: #e0a030; }
+.metric-val.lvl-low i  { background: var(--red); }
+
+/* интерес: чем выше, тем краснее (это сигнал «проверять») */
+.metric-val.lvl-int-high i { background: var(--red); }
+.metric-val.lvl-int-mid i  { background: #e0a030; }
+.metric-val.lvl-int-low i  { background: #3f7a4f; }
+
+/* ===== УЛИКИ ===== */
+.evidence-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.evidence {
+    display: flex;
+    gap: 14px;
+    padding: 12px 14px;
+    background: #f4efe4;
+    border-left: 4px solid #b8ad96;
+    border-radius: 3px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .22);
+}
+
+.evidence:nth-child(odd)  { transform: rotate(-.4deg); }
+.evidence:nth-child(even) { transform: rotate(.4deg); }
+
+.evidence-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.evidence-text {
+    font-size: 14px;
+    line-height: 1.35;
+    color: #333;
+}
+
+.evidence-meta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+}
+
+/* свёрнутая слепым пятном улика */
+.evidence.is-folded {
+    background: repeating-linear-gradient(135deg, #d8ccb1, #d8ccb1 8px, #cfc3a8 8px, #cfc3a8 16px);
+    border-left-color: var(--red);
+    opacity: .9;
+}
+
+.evidence.is-folded .evidence-title { color: var(--red-dark); }
+.evidence.is-folded .evidence-text  { font-style: italic; color: #555; }
+
+.empty {
+    padding: 14px;
+    font-style: italic;
+    color: #666;
+}
+
+/* ===== ЗНАЧОК НАДЁЖНОСТИ 1–4 ===== */
+.lvl-badge {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    font: 700 17px Georgia, serif;
+    color: #fff;
+    border-radius: 50%;
+    background: #888;
+}
+
+.lvl-badge--sm {
+    flex-basis: 24px;
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+}
+
+.lvl-badge.lvl-4 { background: #3f7a4f; }
+.lvl-badge.lvl-3 { background: #7a9a3a; }
+.lvl-badge.lvl-2 { background: #d08a1e; }
+.lvl-badge.lvl-1 { background: var(--red); }
+
+/* ===== ПРАВАЯ КОЛОНКА ===== */
+.request {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #c9bd9f;
+}
+
+.request:last-child {
+    border-bottom: 0;
+}
+
+.request-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.request-sub {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #555;
+}
+
+.request.is-done .request-title {
+    color: #666;
+}
+
+.btn-request {
+    flex: 0 0 auto;
+    padding: 8px 14px;
+    font: inherit;
+    font-size: 13px;
+    color: #fff;
+    background: var(--red);
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.btn-request:hover:not(:disabled) {
+    background: var(--red-dark);
+}
+
+.btn-request:disabled {
+    background: #b9ad90;
+    color: #5b5443;
+    cursor: default;
+}
+
+/* сводка по уровням */
+.level-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    font-size: 14px;
+}
+
+.level-name {
+    flex: 1;
+    line-height: 1.2;
+}
+
+.level-count {
+    min-width: 22px;
+    text-align: center;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #d8ccb1;
+    border-radius: 3px;
+}
+
+/* слепое пятно */
+.blind {
+    border-left: 5px solid var(--red);
+}
+
+.blind-text {
+    margin: 0 0 14px;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.btn-review {
+    width: 100%;
+    padding: 12px;
+    font: inherit;
+    font-size: 15px;
+    color: #4a3b22;
+    background: #cdb88f;
+    border: 1px solid #a8956b;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.btn-review:hover {
+    background: #c0a97c;
+}
+
+.btn-review span {
+    margin-right: 8px;
+    font-size: 18px;
+    vertical-align: -1px;
+}
+
+.btn-review[hidden] {
+    display: none;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 1100px) {
+    .kart-paper {
+        padding: 90px 50px 60px 60px;
+    }
+}
+
+@media (max-width: 800px) {
+    .kart-paper {
+        padding: 70px 28px 40px 34px;
+        background-size: cover;
+    }
+
+    .kart-body {
+        grid-template-columns: 1fr;
+    }
+
+    .kart-people {
+        padding-right: 0;
+        border-right: 0;
+    }
+
+    .dossier-metrics {
+        grid-template-columns: 1fr;
+    }
+}
