@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Допрос — Бюро недостоверности</title>
+    <link href="styles/base.css" rel="stylesheet" />
+    <!-- delo.css даёт шапку, сайдбар, палитру, панели; dopros.css — всё новое для этого экрана -->
+    <link href="styles/delo.css" rel="stylesheet" />
+    <link href="styles/dopros.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- ШАПКА (та же, что в delo.html) -->
+    <header class="header header--delo">
+        <div class="header-bar">
+            <a class="header-brand" href="./index.html">
+                <div class="header-title">Бюро<br>недостоверности</div>
+                <div class="header-divider"></div>
+            </a>
+
+            <a>
+                <div class="header-subtitle">Проверь. Подумай.<br>Узнай правду.</div>
+            </a>
+
+            <div class="case-tag">
+                <div class="case-tag-num">Дело № 003</div>
+                <div class="case-tag-title">Счастливый билет: курс «гарантированного дохода»</div>
+            </div>
+
+            <div class="hstat">
+                <div class="hstat-label">Репутация бюро</div>
+                <div class="hstat-row">
+                    <span class="rep-dots">
+                        <i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i>
+                        <i></i><i></i><i></i><i></i><i></i>
+                    </span>
+                    <span class="hstat-value">5/10</span>
+                </div>
+            </div>
+
+            <div class="hstat hstat-hours">
+                <svg class="hstat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3 2" />
+                </svg>
+                <div>
+                    <div class="hstat-label">Осталось часов</div>
+                    <div class="hstat-value hstat-value--big" id="hoursLeft">8 ч.</div>
+                </div>
+            </div>
+
+            <button class="btn-close" type="button">
+                <span>✕</span> Закрыть дело
+            </button>
+        </div>
+    </header>
+
+    <!-- САЙДБАР (активен «Допрос») -->
+    <nav class="sidebar">
+        <a class="side-link" href="./delo3.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+                <path d="M6 3h8l4 4v14H6V3Z" />
+                <path d="M14 3v4h4M9 12h6M9 16h6" />
+            </svg>
+            <span>Дело</span>
+        </a>
+        <a class="side-link is-active" href="./dopros3a.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <path d="M5 4h14v12H10l-5 4V4Z" />
+                <path d="M10 8.5a2 2 0 1 1 2 2v1M12 13.5h.01" />
+            </svg>
+            <span>Допрос</span>
+        </a>
+        <a class="side-link" href="./kartoteka3.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+                <path d="M8 3h9v14H8z" />
+                <path d="M5 7v14h10M11 8h3M11 12h3" />
+            </svg>
+            <span>Картотека</span>
+        </a>
+        <a class="side-link" href="./doska3.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="16" rx="1.5" />
+                <circle cx="9" cy="9" r="1.5" />
+                <circle cx="15" cy="9" r="1.5" />
+                <circle cx="12" cy="15" r="1.5" />
+                <path d="M10 10l1 4M14 10l-1 4" />
+            </svg>
+            <span>Доска расследования</span>
+        </a>
+        <a class="side-link" href="./verdict3.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M14 4l6 6-3 3-6-6 3-3ZM11 7 4 14l3 3 7-7M4 21h10" />
+            </svg>
+            <span>Вердикт</span>
+        </a>
+        <a class="side-link" href="./dosye3.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z" />
+            </svg>
+            <span>Досье на самого себя</span>
+        </a>
+
+        <div class="side-note">Хороший вопрос — это уже половина правды.</div>
+    </nav>
+
+    <!-- ОСНОВНАЯ ЧАСТЬ -->
+    <main class="delo">
+        <div class="delo-grid">
+
+            <!-- ЦЕНТР: ПАПКА С ДОПРОСОМ -->
+            <section class="folder">
+                <div class="dop-paper">
+                    
+
+                    <span class="stamp-label">Допрос</span>
+
+                    <!-- верх: свидетель + реплика -->
+                    <div class="dop-top">
+                        <figure class="witness">
+                            <div class="witness-photo"><svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" fill="#6b6658"/><circle cx="52" cy="38" r="17" fill="#2b2a27"/><path d="M14 100c2-28 18-40 38-40s36 12 38 40z" fill="#22211f"/></svg>
+                                <img src="images/witness3b.jpg" alt="Лилия Крылова" onerror="this.remove()">
+                                
+                            </div>
+                            <figcaption><b>Лилия Крылова</b><span>Бывший сотрудник школы</span></figcaption>
+                        </figure>
+
+                        <div class="dop-right">
+                            <div class="bubble" id="bubble">«У школы 70% выпускников растут в доходе после курса — значит, курс повышает доход. Цифры не врут.»</div>
+
+                            <div class="action-row">
+                                <button class="btn-objection" id="btnObjection" type="button">
+                                    <span class="obj-icon">!</span> Возражение!
+                                </button>
+
+                                <div class="cost-sticker">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                        stroke-linecap="round">
+                                        <circle cx="12" cy="14" r="7" />
+                                        <path d="M12 10v4l2 2M9 3h6M12 3v4" />
+                                    </svg>
+                                    <div>
+                                        <div class="cost-title">Допрос</div>
+                                        <div class="cost-value">2 часа</div>
+                                        <div class="cost-sub">Стоимость действия</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="dop-question">Выбери фразу и назови логическую ошибку</h2>
+
+                    <div class="dop-choose">
+                        <!-- фразы -->
+                        <div class="phrases" id="phrases"></div>
+
+                        <!-- ошибка -->
+                        <div class="error-box">
+                            <div class="error-head">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 3 2 21h20L12 3Zm-1 7h2v5h-2v-5Zm0 7h2v2h-2v-2Z" />
+                                </svg>
+                                Логическая ошибка
+                            </div>
+                            <select id="errorSelect" class="error-select">
+                                <option value="">Выбери ошибку</option>
+                            </select>
+                            <div class="hint" id="hint">
+                                <span class="hint-i">i</span>
+                                <span id="hintText">Если возражение верное — откроется честная часть показаний. Если неверное — спишется 1 час.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ПРАВО -->
+            <aside class="right">
+
+                <!-- БЛОКНОТ УЛОВОК -->
+                <section class="notebook">
+                    <h2 class="notebook-title">Блокнот уловок</h2>
+                    <div class="tricks" id="tricks"></div>
+                </section>
+
+                <!-- ТЕКУЩИЕ ПОКАЗАТЕЛИ -->
+                <section class="panel panel-stats panel-stats--titled">
+                    <div class="stats-title">Текущие показатели</div>
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <div class="stat-label">Надёжность улик</div>
+                            <div class="stat-row">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5l-8-3Z" />
+                                </svg>
+                                <div class="bar"><i style="width:55%"></i></div>
+                            </div>
+                            <div class="stat-sub">Средняя</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Стоимость действия</div>
+                            <div class="stat-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                                    stroke-linecap="round">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 2" />
+                                </svg>
+                                <span class="stat-num" id="statCost">2 ч.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- КНОПКИ -->
+                <div class="bottom-buttons">
+                      <a class="btn-back" href="./dopros3a.html">
+                        <span>←</span> Назад
+                    </a>
+                    <button class="btn-review" id="btnReview" type="button">
+                        <span>↻</span> Пересмотреть
+                    </button>
+                    <a class="btn-next" href="./kartoteka3.html">
+                        <span>→</span> Перейти к картотеке
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+const TOTAL_HOURS = 8, INTERROGATION_COST = 2, WRONG_COST = 1;
+const PHRASES = [{"text": "«Меня уволили в прошлом году»", "fallacy": null}, {"text": "«70% выпускников растут в доходе, значит, курс повышает доход»", "fallacy": "correlation"}, {"text": "«Гарантий в оферте я не читала»", "fallacy": null}, {"text": "«Отзывы мы выкладывали по списку»", "fallacy": null}, {"text": "«Цифры я видела в презентации»", "fallacy": null}];
+const NEED = 1;
+const HONEST_PART = "«Рост зарплат начался у всей отрасли, не только у выпускников. А негативные отзывы действительно удаляли из галереи.»";
+const KEY = 'dopros3b';
+const GKEY = 'kartoteka3';
+const FALLACIES = {
+            ad_hominem: 'Переход на личности',
+            strawman: 'Соломенное чучело',
+            post_hoc: 'После этого — значит вследствие этого',
+            false_dilemma: 'Ложная дилемма',
+            majority: 'Апелляция к большинству и авторитету',
+            correlation: 'Подмена корреляции причинностью'
+        };
+const TRICKS = [
+            { name: 'Скандалист', fallacy: 'ad_hominem', desc: 'Преувеличивает для эмоций и внимания.',
+              icon: '<path d="M3 10v4h3l5 4V6L6 10H3Zm12-2a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14" />' },
+            { name: 'Пересказчик', fallacy: 'strawman', desc: 'Говорит не о фактах, а о чужих словах.',
+              icon: '<path d="M4 4h16v12H10l-6 4V4Z" /><path d="M8 9h8M8 12h5" />' },
+            { name: 'Суевер', fallacy: 'post_hoc', desc: 'Ссылается на приметы, удачу и предзнаменования.',
+              icon: '<circle cx="8" cy="8" r="3.5" /><circle cx="16" cy="8" r="3.5" /><circle cx="12" cy="14" r="3.5" /><path d="M12 17v4" />' },
+            { name: 'Шантажист выбора', fallacy: 'false_dilemma', desc: 'Создаёт ложную дилемму («либо — либо»).',
+              icon: '<path d="M4 10c0-4 4-6 8-6s8 2 8 6-3 9-8 9-8-5-8-9Z" /><path d="M8 10h2M14 10h2" />' },
+            { name: 'Ссылающийся', fallacy: 'majority', desc: 'Опирается на авторитеты, статусы, мнения.',
+              icon: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />' },
+            { name: 'Статистик-любитель', fallacy: 'correlation', desc: 'Приводит случайные цифры и «исследования».',
+              icon: '<path d="M5 20V12M12 20V5M19 20v-9" />' }
+        ];
+const gameState = () => JSON.parse(localStorage.getItem(GKEY) || 'null') ||
+    { hoursSpent: 0, got: [], reviewed: false, selected: 'artem' };
+const saveGame = s => localStorage.setItem(GKEY, JSON.stringify(s));
+let dop = Object.assign({ paid: false, solved: false, found: [] }, JSON.parse(localStorage.getItem(KEY) || 'null') || {});
+const saveDop = () => localStorage.setItem(KEY, JSON.stringify(dop));
+let chosenPhrase = -1, chosenFallacy = '';
+
+const phrasesEl = document.getElementById('phrases');
+const selectEl = document.getElementById('errorSelect');
+const hintEl = document.getElementById('hint');
+const hintText = document.getElementById('hintText');
+const bubble = document.getElementById('bubble');
+const btnObj = document.getElementById('btnObjection');
+const DEFAULT_HINT = NEED > 1
+    ? 'Здесь несколько уловок (' + NEED + '). Каждое верное возражение засчитывается; честная часть откроется, когда найдёшь все. Неверное — 1 час.'
+    : hintText.textContent;
+hintText.textContent = DEFAULT_HINT;
+
+const hoursLeft = () => Math.max(0, TOTAL_HOURS - gameState().hoursSpent);
+
+function setHint(text, kind) {
+    hintText.textContent = text;
+    hintEl.classList.remove('is-ok', 'is-bad');
+    if (kind) hintEl.classList.add(kind);
+}
+function renderHours() {
+    document.getElementById('hoursLeft').textContent = hoursLeft() + ' ч.';
+    const need = dop.paid ? WRONG_COST : INTERROGATION_COST;
+    const blocked = !dop.solved && hoursLeft() < need;
+    btnObj.disabled = dop.solved || blocked;
+    if (blocked) setHint('Не хватает часов: нужно ' + need + ' ч., осталось ' + hoursLeft() + '. Действие недоступно.', 'is-bad');
+}
+function renderPhrases() {
+    phrasesEl.innerHTML = PHRASES.map((p, i) => `
+        <label class="phrase ${i === chosenPhrase ? 'is-picked' : ''}">
+            <input type="radio" name="phrase" value="${i}" ${i === chosenPhrase ? 'checked' : ''}>
+            <span class="radio"></span>
+            <span>${p.text}</span>
+        </label>`).join('');
+    phrasesEl.querySelectorAll('input').forEach(i => i.addEventListener('change', () => {
+        chosenPhrase = +i.value;
+        renderPhrases();
+    }));
+}
+function renderSelect() {
+    Object.entries(FALLACIES).forEach(([id, name]) => {
+        selectEl.insertAdjacentHTML('beforeend', `<option value="${id}">${name}</option>`);
+    });
+    selectEl.addEventListener('change', () => { chosenFallacy = selectEl.value; });
+}
+function renderTricks() {
+    document.getElementById('tricks').innerHTML = TRICKS.map((t, i) => `
+        <button class="trick" data-i="${i}" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round">${t.icon}</svg>
+            <span class="trick-body"><b>${t.name}</b><small>${t.desc}</small></span>
+            <span class="trick-arrow">›</span>
+        </button>`).join('');
+    document.querySelectorAll('.trick').forEach(b => b.addEventListener('click', () => {
+        const t = TRICKS[+b.dataset.i];
+        chosenFallacy = t.fallacy;
+        selectEl.value = t.fallacy;
+        document.querySelectorAll('.trick').forEach(x => x.classList.remove('is-picked'));
+        b.classList.add('is-picked');
+    }));
+}
+
+btnObj.addEventListener('click', () => {
+    if (dop.solved) return;
+    if (chosenPhrase < 0) { setHint('Сначала выбери фразу свидетеля.', 'is-bad'); return; }
+    if (!chosenFallacy) { setHint('Сначала выбери логическую ошибку в списке.', 'is-bad'); return; }
+    const need = dop.paid ? WRONG_COST : INTERROGATION_COST;
+    if (hoursLeft() < need) { setHint('Не хватает часов: нужно ' + need + ' ч.', 'is-bad'); renderHours(); return; }
+
+    const g = gameState();
+    if (!dop.paid) { g.hoursSpent += INTERROGATION_COST; dop.paid = true; }
+
+    const ph = PHRASES[chosenPhrase];
+    const ok = ph.fallacy && ph.fallacy === chosenFallacy && !dop.found.includes(ph.fallacy);
+    if (ok) {
+        dop.found.push(ph.fallacy);
+        if (dop.found.length >= NEED) {
+            dop.solved = true;
+            bubble.textContent = HONEST_PART;
+            bubble.classList.add('is-honest');
+            setHint('Верно! Свидетель отвечает по существу — открыта честная часть показаний.', 'is-ok');
+        } else {
+            setHint('Верно! Найдено уловок: ' + dop.found.length + ' из ' + NEED + '. Ищи остальные.', 'is-ok');
+        }
+        chosenPhrase = -1;
+    } else {
+        g.hoursSpent = Math.min(TOTAL_HOURS, g.hoursSpent + WRONG_COST);
+        setHint('Неверно. Спишется 1 час — попробуй другую фразу или ошибку.', 'is-bad');
+    }
+    saveGame(g); saveDop(); renderHours(); renderPhrases();
+});
+
+document.getElementById('btnReview').addEventListener('click', () => {
+    chosenPhrase = -1; chosenFallacy = ''; selectEl.value = '';
+    document.querySelectorAll('.trick').forEach(x => x.classList.remove('is-picked'));
+    renderPhrases();
+    if (!dop.solved) setHint(DEFAULT_HINT, null);
+});
+
+if (dop.solved) { bubble.textContent = HONEST_PART; bubble.classList.add('is-honest'); }
+renderHours(); renderPhrases(); renderSelect(); renderTricks();
+</script>
+<script>(function(){var b=document.querySelector(".btn-close");if(b)b.addEventListener("click",function(){if(confirm("Перейти к вердикту?"))location.href="./verdict3.html";});})();</script>
+</body>
+
+</html>

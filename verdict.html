@@ -25,7 +25,7 @@
             </a>
 
             <div class="case-tag">
-                <div class="case-tag-num">Дело № 003</div>
+                <div class="case-tag-num">Дело № 000</div>
                 <div class="case-tag-title">Сосед украл мой велосипед — весь двор так говорит</div>
             </div>
 
@@ -140,10 +140,11 @@
                     <div class="v-conf-right">
                         <div class="v-scale"><span>50%</span><span>100%</span></div>
                         <div class="v-track">
-                            <div class="v-track-bar"><div class="v-track-fill" id="pFill"></div></div>
+                            <div class="v-track-bar">
+                                <div class="v-track-fill" id="pFill"></div>
+                            </div>
                             <span class="v-reco" id="pReco" title="Уверенность по вашим оценкам" hidden></span>
-                            <input type="range" id="pRange" min="50" max="100" step="5"
-                                aria-label="Уверенность P">
+                            <input type="range" id="pRange" min="50" max="100" step="5" aria-label="Уверенность P">
                         </div>
                         <p class="v-note" id="pNote"></p>
                     </div>
@@ -233,8 +234,8 @@
                 </section>
 
                 <button class="btn-verdict" id="btnVerdict" type="button" disabled>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path d="M14 4l6 6-3 3-6-6 3-3ZM11 7 4 14l3 3 7-7M4 21h10" />
                     </svg>
                     <span id="btnText">Вынести вердикт</span>
@@ -280,14 +281,14 @@
 
         /* ===== УЛИКИ ДЕЛА (те же id, что в kartoteka.html) ===== */
         const EVIDENCE = [
-            { id: 'note', title: 'Анонимная записка', short: 'Записка', rel: 1, start: true },
-            { id: 'chat', title: 'Слухи в чате дома', short: 'Чат', rel: 2, start: true },
-            { id: 'alina_t', title: 'Показания Алины Беловой', short: 'Алина', rel: 3, fromDopros: 'dopros' },
-            { id: 'vera_t', title: 'Показания Веры Павловны', short: 'Вера П.', rel: 3, fromDopros: 'dopros2' },
-            { id: 'oleg_t', title: 'Показания Олега Смирнова', short: 'Олег', rel: 3, fromDopros: 'dopros3' },
-            { id: 'tabel', title: 'Табель смены аэропорта', short: 'Табель', rel: 4 },
-            { id: 'video', title: 'Видеозапись с камеры подъезда', short: 'Видео', rel: 4 },
-            { id: 'journal', title: 'Заявка в управляющую компанию', short: 'Заявка', rel: 4 }
+            {id: 'note', title: 'Анонимная записка', short: 'Записка', rel: 1, start: true},
+            {id: 'chat', title: 'Слухи в чате дома', short: 'Чат', rel: 2, start: true},
+            {id: 'alina_t', title: 'Показания Алины Беловой', short: 'Алина', rel: 3, fromDopros: 'dopros'},
+            {id: 'vera_t', title: 'Показания Веры Павловны', short: 'Вера П.', rel: 3, fromDopros: 'dopros2'},
+            {id: 'oleg_t', title: 'Показания Олега Смирнова', short: 'Олег', rel: 3, fromDopros: 'dopros3'},
+            {id: 'tabel', title: 'Табель смены аэропорта', short: 'Табель', rel: 4},
+            {id: 'video', title: 'Видеозапись с камеры подъезда', short: 'Видео', rel: 4},
+            {id: 'journal', title: 'Заявка в управляющую компанию', short: 'Заявка', rel: 4}
         ];
 
         /* ===== СОСТОЯНИЕ ===== */
@@ -295,17 +296,17 @@
         const save = (key, val) => localStorage.setItem(key, JSON.stringify(val));
 
         // общие часы и улики (экраны допроса и картотеки)
-        const game = load('kartoteka', { hoursSpent: 0, got: ['note'], reviewed: false, selected: 'oleg' });
-        game.sift = Object.assign({ stop: false, source: false, others: false, trace: false }, game.sift);
+        const game = load('kartoteka', {hoursSpent: 0, got: ['note'], reviewed: false, selected: 'oleg'});
+        game.sift = Object.assign({stop: false, source: false, others: false, trace: false}, game.sift);
         // доска Тулмина
-        const board = load('doska', { data: [], warrant: '', P: null });
+        const board = load('doska', {data: [], warrant: '', P: null});
         // кампания: репутация, перенос часов, статистика
         const campaign = load('campaign', {
             reputation: START_REP, currentCase: CASE_ID, carryHours: 0,
-            stats: { correct: 0, wrong: 0, judicialErrors: 0, closed: [] }
+            stats: {correct: 0, wrong: 0, judicialErrors: 0, closed: []}
         });
         // этот экран
-        const v = load('verdict', { choice: null, P: null, history: {}, closed: false, result: null });
+        const v = load('verdict', {choice: null, P: null, history: {}, closed: false, result: null});
         if (v.P == null) v.P = board.P || 70;
 
         const saveV = () => save('verdict', v);
@@ -331,7 +332,7 @@
 
         // оценки игрока по порядку улик: [{ev, value}]
         const marked = () => obtained().filter(e => v.history[e.id] != null)
-            .map(e => ({ ev: e, value: v.history[e.id] }));
+            .map(e => ({ev: e, value: v.history[e.id]}));
 
         // уверенность по оценкам: насколько последняя оценка далека от 50/50
         function recommendedP() {
@@ -431,7 +432,7 @@
                 out += `<text class="axis" x="${x(i)}" y="${H - 12}" text-anchor="middle">${i + 1}. ${e.short}</text>`;
             });
 
-            const pts = list.map((e, i) => ({ i, e, val: v.history[e.id] })).filter(p => p.val != null);
+            const pts = list.map((e, i) => ({i, e, val: v.history[e.id]})).filter(p => p.val != null);
 
             if (!pts.length) {
                 out += `<text class="empty" x="${W / 2}" y="${T + h / 2 - 6}" text-anchor="middle">
@@ -475,7 +476,7 @@
             pts.forEach((p, k) => {
                 if (!k) return;
                 const d = p.val - pts[k - 1].val;
-                if (!best || Math.abs(d) > Math.abs(best.d)) best = { d, e: p.e };
+                if (!best || Math.abs(d) > Math.abs(best.d)) best = {d, e: p.e};
             });
             $('shiftNote').innerHTML = best && best.d
                 ? `Сильнее всего оценка изменилась после улики «${best.e.title}»: <b>${best.d > 0 ? '+' : ''}${best.d}%</b>.`
@@ -501,7 +502,7 @@
                 inp.nextElementSibling.classList.remove('is-empty');
                 saveV();
                 // SIFT «Стоп»: игрок остановился и оценил улику
-                if (!game.sift.stop) { game.sift.stop = true; save('kartoteka', game); renderSummary(); }
+                if (!game.sift.stop) {game.sift.stop = true; save('kartoteka', game); renderSummary();}
                 renderChart(); renderConfidence();
             }));
         }
@@ -511,10 +512,9 @@
             $('relBar').style.width = r * 10 + '%';
             $('relValue').textContent = `${r}/10`;
             $('evCount').textContent = `${obtained().length} из ${EVIDENCE.length}`;
-            $('carryValue').textContent = (v.closed && v.result ? v.result.carry : hoursLeft()) + ' ч';
-
+            $('carryValue').textContent = (v.closed && v.result ? v.result.carry : Math.min(2, hoursLeft())) + ' ч';
             const steps = [['stop', 'Стоп'], ['source', 'Изучи источник'],
-                ['others', 'Другие источники'], ['trace', 'Первоисточник']];
+            ['others', 'Другие источники'], ['trace', 'Первоисточник']];
             $('sift').innerHTML = steps.map(([k, t]) =>
                 `<span class="${game.sift[k] ? 'is-done' : ''}">${game.sift[k] ? '✓ ' : ''}${t}</span>`).join('');
         }
@@ -523,7 +523,7 @@
             const alert = v.choice === 'insufficient' && obtained().length > 0 && !v.closed;
             const card = $('warnCard');
             card.classList.remove('is-alert');
-            if (alert) { void card.offsetWidth; card.classList.add('is-alert'); }
+            if (alert) {void card.offsetWidth; card.classList.add('is-alert');}
         }
 
         function renderButton() {
@@ -543,7 +543,7 @@
 
         function renderClosed() {
             const b = $('closedBanner');
-            if (!v.closed || !v.result) { b.hidden = true; return; }
+            if (!v.closed || !v.result) {b.hidden = true; return;}
             const r = v.result;
             b.hidden = false;
             b.className = 'v-closed ' + (r.correct ? 'is-ok' : 'is-bad');
@@ -563,7 +563,7 @@
             const first = $('modalCard').querySelector('button, a');
             if (first) first.focus();
         }
-        const closeModal = () => { $('modal').hidden = true; };
+        const closeModal = () => {$('modal').hidden = true;};
 
         $('modal').addEventListener('click', e => {
             if (e.target.id === 'modal' && !v.revoked) closeModal();
@@ -584,7 +584,7 @@
                 <p>Заключение: <b>«${o.title}»</b><br>Уверенность P: <b>${v.P}%</b></p>
                 ${warn}${risky}
                 <p>После вынесения вердикт изменить нельзя. Неизрасходованные часы
-                    (<b>${hoursLeft()} ч</b>) перейдут в следующее дело.</p>
+                    (<b>${Math.min(2, hoursLeft())} ч</b> (максимум 2)) перейдут в следующее дело.</p>
                 <div class="v-modal-actions">
                     <button class="m-secondary" type="button" id="mCancel">Вернуться</button>
                     <button class="m-primary" type="button" id="mOk">Вынести вердикт</button>
@@ -598,12 +598,12 @@
             const delta = repDelta(correct, v.P);
             const before = campaign.reputation;
             const after = Math.min(MAX_REP, before + delta);
-            const carry = hoursLeft();
+            const carry = Math.min(2, hoursLeft());
 
             // кампания
             campaign.reputation = after;
             campaign.carryHours = carry;
-            campaign.stats = Object.assign({ correct: 0, wrong: 0, judicialErrors: 0, closed: [] }, campaign.stats);
+            campaign.stats = Object.assign({correct: 0, wrong: 0, judicialErrors: 0, closed: []}, campaign.stats);
             if (correct) campaign.stats.correct++; else campaign.stats.wrong++;
             if (!correct && v.P >= 90) campaign.stats.judicialErrors++;
             if (!campaign.stats.closed.includes(CASE_ID)) campaign.stats.closed.push(CASE_ID);
@@ -612,7 +612,7 @@
 
             // дело
             v.closed = true;
-            v.result = { choice: v.choice, P: v.P, correct, delta, before, after, carry, truth: TRUTH };
+            v.result = {choice: v.choice, P: v.P, correct, delta, before, after, carry, truth: TRUTH};
             saveV();
 
             renderAll();
@@ -664,7 +664,7 @@
         });
 
         $('btnVerdict').addEventListener('click', () => {
-            if (v.closed) { location.href = './dosye.html'; return; }
+            if (v.closed) {location.href = './dosye.html'; return;}
             if (!v.choice) return;
             if (v.choice !== 'insufficient' && boardMissing().length) {
                 renderOptions();

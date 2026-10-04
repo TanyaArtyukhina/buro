@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Дело № 003 — Бюро недостоверности</title>
+    <title>Дело № 000 — Бюро недостоверности</title>
     <link href="styles/base.css" rel="stylesheet" />
     <link href="styles/delo.css" rel="stylesheet" />
 </head>
@@ -23,7 +23,7 @@
             </a>
 
             <div class="case-tag">
-                <div class="case-tag-num">Дело № 003</div>
+                <div class="case-tag-num">Дело № 000</div>
                 <div class="case-tag-title">Сосед украл мой велосипед — весь двор так говорит</div>
             </div>
 
@@ -124,7 +124,7 @@
                                 <path d="M3.5 21c0-4.6 3.8-7 8.5-7s8.5 2.4 8.5 7z" />
                             </svg>
                             <div>
-                                <div class="client-name">Клиент</div>
+                                <div class="client-name">Марина Ковалева</div>
                                 <div class="client-sub">Житель многоквартирного дома</div>
                             </div>
                         </div>
@@ -158,13 +158,13 @@
                     <h2 class="intuition-title">Твоя интуиция</h2>
                     <div class="intuition-buttons">
                         <button class="ibtn ibtn-yes" type="button" data-choice="yes">
-                            <span class="ibtn-icon">✓</span> Верю
+                            <span class="ibtn-icon">✓</span> Подтверждена
                         </button>
                         <button class="ibtn ibtn-no" type="button" data-choice="no">
-                            <span class="ibtn-icon">✕</span> Не верю
+                            <span class="ibtn-icon">✕</span> Опровергнута
                         </button>
                         <button class="ibtn ibtn-maybe" type="button" data-choice="maybe">
-                            <span class="ibtn-icon">?</span> Недостаточно<br>данных
+                            <span class="ibtn-icon">?</span> Данных<br>недостаточно
                         </button>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
                                 <circle class="ring-fg" id="ring" cx="60" cy="60" r="52" />
                             </svg>
                             <div class="timer-center">
-                                <div class="timer-num" id="timerNum">60</div>
+                                <div class="timer-num" id="timerNum">15</div>
                                 <div class="timer-unit">секунд</div>
                             </div>
                         </div>
@@ -282,7 +282,7 @@
 
     <script>
         /* ===== НАСТРОЙКИ ===== */
-        const FIRST_TIME = 60;          // секунд на интуитивный ответ (по механике — 15)
+        const FIRST_TIME = 15;          // секунд на интуитивный ответ (по механике — 15)
         const TOTAL_HOURS = 8;          // часов на дело
         const START_REP = 5;
         const MAX_REP = 10;
@@ -290,8 +290,7 @@
 
         // кнопки интуиции → вердикты (те же значения, что на экране «Вердикт»)
         const CHOICE_MAP = {yes: 'confirmed', no: 'refuted', maybe: 'insufficient'};
-        const CHOICE_NAME = {confirmed: '«Верю»', refuted: '«Не верю»', insufficient: '«Недостаточно данных»'};
-
+        const CHOICE_NAME = {confirmed: '«Подтверждена»', refuted: '«Опровергнута»', insufficient: '«Данных недостаточно»'};
         // улики дела (те же id, что в kartoteka.html) — для панели «Надёжность улик»
         const EVIDENCE = [
             {id: 'note', rel: 1, start: true},

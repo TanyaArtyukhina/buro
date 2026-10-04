@@ -25,7 +25,7 @@
             </a>
 
             <div class="case-tag">
-                <div class="case-tag-num">Дело № 003</div>
+                <div class="case-tag-num">Дело № 000</div>
                 <div class="case-tag-title">Сосед украл мой велосипед — весь двор так говорит</div>
             </div>
 
@@ -116,7 +116,7 @@
             <!-- ЦЕНТР: ПАПКА С ДОПРОСОМ -->
             <section class="folder">
                 <div class="dop-paper">
-                    
+
 
                     <span class="stamp-label">Допрос</span>
 
@@ -124,7 +124,7 @@
                     <div class="dop-top">
                         <figure class="witness">
                             <div class="witness-photo">
-                                <img src="images/witness.jpg" alt="Свидетель">
+                                <img src="images/witness2.jpg" alt="Свидетель">
                                 <svg viewBox="0 0 100 100" aria-hidden="true">
                                     <rect width="100" height="100" fill="#6b6658" />
                                     <circle cx="52" cy="38" r="17" fill="#2b2a27" />
@@ -133,13 +133,13 @@
                             </div>
                             <figcaption>
                                 <b>Свидетель</b>
-                                <span>Соседка, 21 год</span>
+                                <span>Свидетель, 22 года</span>
                             </figcaption>
                         </figure>
 
                         <div class="dop-right">
                             <div class="bubble" id="bubble">
-                                «Я точно видел, как он вчера вечером вышел из подъезда с велосипедом.
+                                «Я точно видела, как он вчера вечером вышел из подъезда с велосипедом.
                                 Да и весь двор об этом говорит. Думаю, тут и так всё ясно.»
                             </div>
 
@@ -183,7 +183,8 @@
                             </select>
                             <div class="hint" id="hint">
                                 <span class="hint-i">i</span>
-                                <span id="hintText">Если возражение верное — откроется честная часть показаний. Если неверное — спишется 1 час.</span>
+                                <span id="hintText">Если возражение верное — откроется честная часть показаний. Если
+                                    неверное — спишется 1 час.</span>
                             </div>
                         </div>
                     </div>
@@ -232,7 +233,7 @@
                                     <circle cx="12" cy="12" r="5" />
                                     <circle cx="12" cy="12" r="1.5" fill="currentColor" />
                                 </svg>
-                                <span class="stat-num">62%</span>
+                                <span class="stat-num" id="statP">—</span>
                             </div>
                         </div>
                     </div>
@@ -244,7 +245,7 @@
                         <span>↻</span> Пересмотреть
                     </button>
                     <a class="btn-next" href="./dopros2.html">
-                        <span>→</span> Следующее дело
+                        <span>→</span> Следующий свидетель
                     </a>
                 </div>
             </aside>
@@ -259,15 +260,15 @@
 
         /* ===== ДАННЫЕ ДЕМО-СВИДЕТЕЛЯ ===== */
         const PHRASES = [
-            { id: 0, text: '«Да и весь двор об этом говорит»', fallacy: 'majority' },
-            { id: 1, text: '«Я точно видел, как он вчера вечером…»' },
-            { id: 2, text: '«Вы же понимаете, это же очевидно!»' },
-            { id: 3, text: '«Если он не виноват, то почему он молчит?»' },
-            { id: 4, text: '«Такие вещи часто случаются, это нормально»' }
+            {id: 0, text: '«Да и весь двор об этом говорит»', fallacy: 'majority'},
+            {id: 1, text: '«Я точно видела, как он вчера вечером…»'},
+            {id: 2, text: '«Вы же понимаете, это же очевидно!»'},
+            {id: 3, text: '«Если он не виноват, то почему он молчит?»'},
+            {id: 4, text: '«Такие вещи часто случаются, это нормально»'}
         ];
         const CORRECT_PHRASE = 0;
         const CORRECT_FALLACY = 'majority';
-        const HONEST_PART = '«Ладно, сам я лица не разглядел. Видел только, что вечером у подъезда кто-то возился с велосипедом…»';
+        const HONEST_PART = '«Ладно, сама я лица не разглядела. Видела только, что вечером у подъезда кто-то возился с велосипедом…»';
 
         // id ошибки → название; trick — типаж из блокнота
         const FALLACIES = {
@@ -280,28 +281,46 @@
         };
 
         const TRICKS = [
-            { name: 'Скандалист', fallacy: 'ad_hominem', desc: 'Преувеличивает для эмоций и внимания.',
-              icon: '<path d="M3 10v4h3l5 4V6L6 10H3Zm12-2a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14" />' },
-            { name: 'Пересказчик', fallacy: 'strawman', desc: 'Говорит не о фактах, а о чужих словах.',
-              icon: '<path d="M4 4h16v12H10l-6 4V4Z" /><path d="M8 9h8M8 12h5" />' },
-            { name: 'Суевер', fallacy: 'post_hoc', desc: 'Ссылается на приметы, удачу и предзнаменования.',
-              icon: '<circle cx="8" cy="8" r="3.5" /><circle cx="16" cy="8" r="3.5" /><circle cx="12" cy="14" r="3.5" /><path d="M12 17v4" />' },
-            { name: 'Шантажист выбора', fallacy: 'false_dilemma', desc: 'Создаёт ложную дилемму («либо — либо»).',
-              icon: '<path d="M4 10c0-4 4-6 8-6s8 2 8 6-3 9-8 9-8-5-8-9Z" /><path d="M8 10h2M14 10h2" />' },
-            { name: 'Ссылающийся', fallacy: 'majority', desc: 'Опирается на авторитеты, статусы, мнения.',
-              icon: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />' },
-            { name: 'Статистик-любитель', fallacy: 'correlation', desc: 'Приводит случайные цифры и «исследования».',
-              icon: '<path d="M5 20V12M12 20V5M19 20v-9" />' }
+            {
+                name: 'Скандалист', fallacy: 'ad_hominem', desc: 'Преувеличивает для эмоций и внимания.',
+                icon: '<path d="M3 10v4h3l5 4V6L6 10H3Zm12-2a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14" />'
+            },
+            {
+                name: 'Пересказчик', fallacy: 'strawman', desc: 'Говорит не о фактах, а о чужих словах.',
+                icon: '<path d="M4 4h16v12H10l-6 4V4Z" /><path d="M8 9h8M8 12h5" />'
+            },
+            {
+                name: 'Суевер', fallacy: 'post_hoc', desc: 'Ссылается на приметы, удачу и предзнаменования.',
+                icon: '<circle cx="8" cy="8" r="3.5" /><circle cx="16" cy="8" r="3.5" /><circle cx="12" cy="14" r="3.5" /><path d="M12 17v4" />'
+            },
+            {
+                name: 'Шантажист выбора', fallacy: 'false_dilemma', desc: 'Создаёт ложную дилемму («либо — либо»).',
+                icon: '<path d="M4 10c0-4 4-6 8-6s8 2 8 6-3 9-8 9-8-5-8-9Z" /><path d="M8 10h2M14 10h2" />'
+            },
+            {
+                name: 'Ссылающийся', fallacy: 'majority', desc: 'Опирается на авторитеты, статусы, мнения.',
+                icon: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />'
+            },
+            {
+                name: 'Статистик-любитель', fallacy: 'correlation', desc: 'Приводит случайные цифры и «исследования».',
+                icon: '<path d="M5 20V12M12 20V5M19 20v-9" />'
+            }
         ];
 
         /* ===== СОСТОЯНИЕ ===== */
         // Часы общие с экраном «Картотека» (ключ 'kartoteka'), остальное — локально для допроса
         const gameState = () => JSON.parse(localStorage.getItem('kartoteka') || 'null') ||
-            { hoursSpent: 0, got: ['note'], reviewed: false, selected: 'oleg' };
+            {hoursSpent: 0, got: ['note'], reviewed: false, selected: 'oleg'};
         const saveGame = s => localStorage.setItem('kartoteka', JSON.stringify(s));
-        let dop = JSON.parse(localStorage.getItem('dopros') || 'null') || { paid: false, solved: false };
+        let dop = JSON.parse(localStorage.getItem('dopros') || 'null') || {paid: false, solved: false};
         const saveDop = () => localStorage.setItem('dopros', JSON.stringify(dop));
-
+        // уверенность P — та же, что на экране «Дело» / «Вердикт»
+        const verdict = JSON.parse(localStorage.getItem('verdict') || 'null') || {};
+        const board = JSON.parse(localStorage.getItem('doska') || 'null') || {};
+        const delo = JSON.parse(localStorage.getItem('delo') || 'null') || {};
+        const P = verdict.P ?? board.P ?? (delo.firstImpression && delo.firstImpression.P) ?? null;
+        document.getElementById('statP').textContent = P != null ? P + '%' : '—';
+        
         let chosenPhrase = 0;   // в макете по умолчанию выбрана первая фраза
         let chosenFallacy = '';
 
@@ -316,9 +335,14 @@
         const DEFAULT_BUBBLE = bubble.textContent.trim();
 
         /* ===== ОТРИСОВКА ===== */
+        const hoursLeft = () => Math.max(0, TOTAL_HOURS - gameState().hoursSpent);
+
         function renderHours() {
-            const left = TOTAL_HOURS - gameState().hoursSpent;
-            document.getElementById('hoursLeft').textContent = left + ' ч.';
+            document.getElementById('hoursLeft').textContent = hoursLeft() + ' ч.';
+            const need = dop.paid ? WRONG_COST : INTERROGATION_COST;
+            const blocked = !dop.solved && hoursLeft() < need;
+            btnObj.disabled = dop.solved || blocked;
+            if (blocked) setHint('Не хватает часов: нужно ' + need + ' ч., осталось ' + hoursLeft() + '. Действие недоступно.', 'is-bad');
         }
 
         function renderPhrases() {
@@ -338,7 +362,7 @@
             Object.entries(FALLACIES).forEach(([id, name]) => {
                 selectEl.insertAdjacentHTML('beforeend', `<option value="${id}">${name}</option>`);
             });
-            selectEl.addEventListener('change', () => { chosenFallacy = selectEl.value; });
+            selectEl.addEventListener('change', () => {chosenFallacy = selectEl.value;});
         }
 
         function renderTricks() {
@@ -371,12 +395,14 @@
         /* ===== ДЕЙСТВИЯ ===== */
         btnObj.addEventListener('click', () => {
             if (dop.solved) return;
-            if (!chosenFallacy) { setHint('Сначала выбери логическую ошибку в списке.', 'is-bad'); return; }
+            if (!chosenFallacy) {setHint('Сначала выбери логическую ошибку в списке.', 'is-bad'); return;}
+            const need = dop.paid ? WRONG_COST : INTERROGATION_COST;
+            if (hoursLeft() < need) {setHint('Не хватает часов: нужно ' + need + ' ч.', 'is-bad'); renderHours(); return;}
 
             const g = gameState();
 
             // первый клик запускает допрос (2 часа)
-            if (!dop.paid) { g.hoursSpent += INTERROGATION_COST; dop.paid = true; }
+            if (!dop.paid) {g.hoursSpent += INTERROGATION_COST; dop.paid = true;}
 
             const ok = chosenPhrase === CORRECT_PHRASE && chosenFallacy === CORRECT_FALLACY;
             if (ok) {

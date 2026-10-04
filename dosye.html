@@ -25,7 +25,7 @@
             </a>
 
             <div class="case-tag">
-                <div class="case-tag-num">Дело № 003</div>
+                <div class="case-tag-num">Дело № 000</div>
                 <div class="case-tag-title">Сосед украл мой велосипед — весь двор так говорит</div>
             </div>
 
@@ -512,13 +512,7 @@
                 items.push({ s: 'ok', name: 'Предвзятость текущего момента', note: 'Не спешили: время ушло на сбор улик.' });
             }
 
-            // ошибка выжившего — в деле №3 важно выслушать обвиняемого
-            if (!isObtained(EVIDENCE.find(e => e.id === 'oleg_t'))) {
-                items.push({ s: 'warn', name: 'Ошибка выжившего', note: 'Учитывали только тех, кто говорил против Олега. Его собственных показаний в деле нет.' });
-            } else {
-                items.push({ s: 'ok', name: 'Ошибка выжившего', note: 'Выслушали и обвиняемого, а не только тех, кто «всё видел».' });
-            }
-
+            
             const icon = { ok: '<span class="mark mark--ok">✓</span>', warn: '<span class="mark mark--warn">!</span>', na: '<span class="mark mark--na">–</span>' };
             $('biasList').innerHTML = items.map(i =>
                 `<li>${icon[i.s]}<div><b>${i.name}</b><small>${i.note}</small></div></li>`).join('');

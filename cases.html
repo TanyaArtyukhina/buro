@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Выбор дела — Бюро недостоверности</title>
+<link href="styles/base.css" rel="stylesheet" />
+<link href="styles/cases.css" rel="stylesheet" />
+</head>
+<body>
+<header class="header">
+<a class="header-brand" href="./index.html">
+<div class="header-title">Бюро<br>недостоверности</div><div class="header-divider"></div>
+<div class="header-subtitle">Проверь. Подумай.<br>Узнай правду.</div></a>
+</header>
+<main class="cases">
+<h1 class="cases-title">Выбор дела</h1>
+<p class="cases-lead">Дела можно проходить по порядку или выбирать любое. Прогресс каждого дела хранится отдельно.</p>
+<div class="cases-list">
+<article class="case-card" data-id="0">
+<div class="case-info"><div class="case-num">Дело № 000</div><h2>Пропавший велосипед</h2><p>Обучающий пролог. Из подъезда пропал велосипед, а «весь двор» уверен, что его украл сосед.</p>
+<a class="btn-open" href="./delo.html">Открыть дело</a></div>
+<div class="case-status"><div class="status-mark" id="st0"></div><div class="status-text" id="tx0"></div>
+<button class="btn-reset" type="button" data-id="0">Сбросить прогресс</button></div></article>
+<article class="case-card" data-id="1">
+<div class="case-info"><div class="case-num">Дело № 001</div><h2>Отмена пар</h2><p>В чате группы написали, что пары в пятницу отменяют. Преподаватель говорит, что занятия будут. Нужно найти, кто написал первым.</p>
+<a class="btn-open" href="./delo1.html">Открыть дело</a></div>
+<div class="case-status"><div class="status-mark" id="st1"></div><div class="status-text" id="tx1"></div>
+<button class="btn-reset" type="button" data-id="1">Сбросить прогресс</button></div></article>
+<article class="case-card" data-id="2">
+<div class="case-info"><div class="case-num">Дело № 002</div><h2>Разбитая витрина</h2><p>Ночью разбита витрина. Владелец называет сумму ущерба — 12 000 рублей — и обвиняет подростка, замеченного днём у входа.</p>
+<a class="btn-open" href="./delo2.html">Открыть дело</a></div>
+<div class="case-status"><div class="status-mark" id="st2"></div><div class="status-text" id="tx2"></div>
+<button class="btn-reset" type="button" data-id="2">Сбросить прогресс</button></div></article>
+<article class="case-card" data-id="3">
+<div class="case-info"><div class="case-num">Дело № 003</div><h2>Счастливый билет</h2><p>Онлайн-курс обещает «гарантированный доход», а на лендинге «все выпускники выиграли». Клиент уже заплатил и начал сомневаться.</p>
+<a class="btn-open" href="./delo3.html">Открыть дело</a></div>
+<div class="case-status"><div class="status-mark" id="st3"></div><div class="status-text" id="tx3"></div>
+<button class="btn-reset" type="button" data-id="3">Сбросить прогресс</button></div></article>
+<article class="case-card" data-id="4">
+<div class="case-info"><div class="case-num">Дело № 004</div><h2>Два свидетеля</h2><p>В кафе пропал кошелёк гостя. Два свидетеля дают противоположные показания и оба уверяют, что видели всё своими глазами.</p>
+<a class="btn-open" href="./delo4.html">Открыть дело</a></div>
+<div class="case-status"><div class="status-mark" id="st4"></div><div class="status-text" id="tx4"></div>
+<button class="btn-reset" type="button" data-id="4">Сбросить прогресс</button></div></article>
+</div>
+<a class="btn-back-index" href="./index.html"><span>←</span> Назад</a>
+</main>
+<script>
+const META = [{"id": 0, "vk": "verdict", "keys": ["kartoteka", "doska", "verdict", "delo", "dopros", "dopros2", "dopros3"]}, {"id": 1, "vk": "verdict1", "keys": ["kartoteka1", "doska1", "verdict1", "delo1", "dopros1a", "dopros1b"]}, {"id": 2, "vk": "verdict2", "keys": ["kartoteka2", "doska2", "verdict2", "delo2", "dopros2a", "dopros2b"]}, {"id": 3, "vk": "verdict3", "keys": ["kartoteka3", "doska3", "verdict3", "delo3", "dopros3a", "dopros3b"]}, {"id": 4, "vk": "verdict4", "keys": ["kartoteka4", "doska4", "verdict4", "delo4", "dopros4a", "dopros4b"]}];
+const read = k => JSON.parse(localStorage.getItem(k) || 'null');
+function isClosed(m) {
+    const v = read(m.vk), camp = read('campaign') || {};
+    return !!(v && v.closed) || (((camp.stats || {}).closed) || []).includes(m.id);
+}
+function render() {
+    META.forEach(m => {
+        const ok = isClosed(m);
+        const st = document.getElementById('st' + m.id), tx = document.getElementById('tx' + m.id);
+        st.className = 'status-mark ' + (ok ? 'is-done' : 'is-open');
+        st.textContent = ok ? '✓' : '';
+        tx.textContent = ok ? '✓ Дело закрыто' : 'Не завершено';
+        tx.className = 'status-text ' + (ok ? 'is-done' : '');
+    });
+}
+document.querySelectorAll('.btn-reset').forEach(b => b.addEventListener('click', () => {
+    const m = META.find(x => x.id === +b.dataset.id);
+    if (!confirm('Сбросить прогресс по делу № 00' + m.id + '? Остальные дела не изменятся.')) return;
+    const camp = read('campaign');
+    if (camp) {
+        camp.stats = Object.assign({ correct: 0, wrong: 0, judicialErrors: 0, closed: [] }, camp.stats);
+        const pc = (camp.perCase || {})[m.id];
+        if (pc && pc.closed) {
+            if (pc.before != null) camp.reputation = pc.before;
+            if (pc.correct) camp.stats.correct = Math.max(0, camp.stats.correct - 1);
+            else camp.stats.wrong = Math.max(0, camp.stats.wrong - 1);
+            if (!pc.correct && pc.P >= 90) camp.stats.judicialErrors = Math.max(0, camp.stats.judicialErrors - 1);
+        }
+        camp.stats.closed = camp.stats.closed.filter(id => id !== m.id);
+        if (camp.perCase) delete camp.perCase[m.id];
+        localStorage.setItem('campaign', JSON.stringify(camp));
+    }
+    m.keys.forEach(k => localStorage.removeItem(k));
+    render();
+}));
+render();
+</script>
+</body>
+</html>
