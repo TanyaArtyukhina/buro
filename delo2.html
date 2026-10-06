@@ -116,7 +116,8 @@
                 <div class="folder-paper">
                     <div class="folder-left">
                         <span class="stamp-label">Заявление клиента</span>
-                        <h1 class="claim">«Ночью разбили витрину — ущерб 12 000 рублей, я уже посчитал. Это тот подросток, что крутился у входа днём»</h1>
+                        <h1 class="claim">«Ночью разбили витрину — ущерб 12 000 рублей, я уже посчитал. Это тот
+                            подросток, что крутился у входа днём»</h1>
 
                         <div class="client">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -139,11 +140,20 @@
                                 Краткие детали
                             </div>
                             <ul class="details-list">
-<li>Витрина магазина разбита ночью.</li>
-<li>Владелец оценил ущерб в 12 000 рублей.</li>
-<li>Днём у входа видели подростка.</li>
-<li>Прямых доказательств вины подростка нет.</li>
-</ul>
+                                <li>Витрина магазина разбита ночью.</li>
+                                <li>Владелец оценил ущерб в 12 000 рублей.</li>
+                                <li>Днём у входа видели подростка.</li>
+                                <li>Прямых доказательств вины подростка нет.</li>
+                            </ul>
+                        </div>
+                        <div class="anchor">
+                            <div class="anchor-num">12&nbsp;000 ₽</div>
+                            <div class="anchor-cap">ущерб по словам владельца</div>
+                            <label class="anchor-form">Ваша оценка ущерба, ₽
+                                <input type="number" id="estInput" min="0" step="100" placeholder="например, 6000">
+                                <button type="button" id="estSave">Записать</button>
+                            </label>
+                            <p class="anchor-msg" id="estMsg"></p>
                         </div>
                     </div>
 
@@ -309,6 +319,13 @@
         if (!read('campaign')) save('campaign', campaign);
 
         // часы и улики — общие с допросами и картотекой
+        // перенос часов из предыдущего дела (только при первом открытии этого дела)
+        const carryIn = ((campaign.stats || {}).closed || []).includes(CASE_ID - 1) ? (campaign.carryHours || 0) : 0;
+        if (!read('kartoteka2')) {                       // ← ключ своего дела
+            save('kartoteka2', {hoursSpent: -carryIn, got: ['note'], reviewed: false, selected: 'marina'});
+            campaign.carryHours = 0;
+            save('campaign', campaign);
+        }
         const game = load('kartoteka2', {hoursSpent: 0, got: ['note'], reviewed: false, selected: 'marina'});
         game.sift = Object.assign({stop: false, source: false, others: false, trace: false}, game.sift);
 
@@ -460,6 +477,20 @@
             const ok = confirm(`Перейти к вердикту прямо сейчас?\n\nОсталось ${leftH} ч. Неизрасходованные часы перейдут ` +
                 'в следующее дело, но несобранные улики могут привести к ошибке.');
             if (ok) location.href = './verdict2.html';
+        });
+        /* ===== ОЦЕНКА УЩЕРБА (эффект якоря) ===== */
+        const estInput = document.getElementById('estInput');
+        const estMsg = document.getElementById('estMsg');
+        if (game.estimate != null) {
+            estInput.value = game.estimate;
+            estMsg.textContent = 'Ваша оценка записана: ' + game.estimate + ' ₽. Сверим её в досье.';
+        }
+        document.getElementById('estSave').addEventListener('click', () => {
+            const v = parseInt(estInput.value, 10);
+            if (isNaN(v) || v < 0) {estMsg.textContent = 'Введите сумму числом.'; return;}
+            game.estimate = v;
+            save('kartoteka2', game);
+            estMsg.textContent = 'Ваша оценка записана: ' + v + ' ₽. Сверим её в досье.';
         });
 
         /* ===== СТАРТ ===== */

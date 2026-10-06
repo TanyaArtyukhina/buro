@@ -116,7 +116,8 @@
                 <div class="folder-paper">
                     <div class="folder-left">
                         <span class="stamp-label">Заявление клиента</span>
-                        <h1 class="claim">«Курс обещает гарантированный доход, а на сайте все выпускники выиграли. Я заплатил, а дохода нет. Я один такой?»</h1>
+                        <h1 class="claim">«Курс обещает гарантированный доход, а на сайте все выпускники выиграли. Я
+                            заплатил, а дохода нет. Я один такой?»</h1>
 
                         <div class="client">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -139,11 +140,11 @@
                                 Краткие детали
                             </div>
                             <ul class="details-list">
-<li>Курс обещает «гарантированный доход».</li>
-<li>Лендинг: «все, кто прошёл курс, выиграли».</li>
-<li>Клиент уже заплатил, дохода пока нет.</li>
-<li>Реклама торопит: «цена скоро вырастет».</li>
-</ul>
+                                <li>Курс обещает «гарантированный доход».</li>
+                                <li>Лендинг: «все, кто прошёл курс, выиграли».</li>
+                                <li>Клиент уже заплатил, дохода пока нет.</li>
+                                <li>Реклама торопит: «цена скоро вырастет».</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -309,6 +310,13 @@
         if (!read('campaign')) save('campaign', campaign);
 
         // часы и улики — общие с допросами и картотекой
+        // перенос часов из предыдущего дела (только при первом открытии этого дела)
+        const carryIn = ((campaign.stats || {}).closed || []).includes(CASE_ID - 1) ? (campaign.carryHours || 0) : 0;
+        if (!read('kartoteka3')) {                       // ← ключ своего дела
+            save('kartoteka3', {hoursSpent: -carryIn, got: ['note'], reviewed: false, selected: 'artem'});
+            campaign.carryHours = 0;
+            save('campaign', campaign);
+        }
         const game = load('kartoteka3', {hoursSpent: 0, got: ['note'], reviewed: false, selected: 'artem'});
         game.sift = Object.assign({stop: false, source: false, others: false, trace: false}, game.sift);
 

@@ -116,7 +116,8 @@
                 <div class="folder-paper">
                     <div class="folder-left">
                         <span class="stamp-label">Заявление клиента</span>
-                        <h1 class="claim">«У гостя пропал кошелёк. Один свидетель говорит, что украл официант, другой — что он ни при чём. Кто прав?»</h1>
+                        <h1 class="claim">«У гостя пропал кошелёк. Один свидетель говорит, что украл официант, другой —
+                            что он ни при чём. Кто прав?»</h1>
 
                         <div class="client">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -139,11 +140,11 @@
                                 Краткие детали
                             </div>
                             <ul class="details-list">
-<li>В кафе пропал кошелёк гостя.</li>
-<li>Один свидетель обвиняет официанта.</li>
-<li>Другой — защищает его.</li>
-<li>Оба говорят, что видели «своими глазами».</li>
-</ul>
+                                <li>В кафе пропал кошелёк гостя.</li>
+                                <li>Один свидетель обвиняет официанта.</li>
+                                <li>Другой — защищает его.</li>
+                                <li>Оба говорят, что видели «своими глазами».</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -309,6 +310,13 @@
         if (!read('campaign')) save('campaign', campaign);
 
         // часы и улики — общие с допросами и картотекой
+        // перенос часов из предыдущего дела (только при первом открытии этого дела)
+        const carryIn = ((campaign.stats || {}).closed || []).includes(CASE_ID - 1) ? (campaign.carryHours || 0) : 0;
+        if (!read('kartoteka4')) {                       // ← ключ своего дела
+            save('kartoteka4', {hoursSpent: -carryIn, got: ['note'], reviewed: false, selected: 'boris'});
+            campaign.carryHours = 0;
+            save('campaign', campaign);
+        }
         const game = load('kartoteka4', {hoursSpent: 0, got: ['note'], reviewed: false, selected: 'boris'});
         game.sift = Object.assign({stop: false, source: false, others: false, trace: false}, game.sift);
 

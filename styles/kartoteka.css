@@ -775,3 +775,7 @@
         flex-direction: row;
     }
 }
+.surv { margin: 14px 18px 0; padding-top: 12px; border-top: 1px dashed #cbbf9f; }
+.surv-title { font-weight: 700; font-size: 13.5px; margin-bottom: 6px; }
+.surv-msg { margin: 8px 0 0; font-size: 12.5px; line-height: 1.35; }
+.surv-msg.is-ok { color: #2f4a1c; } .surv-msg.is-bad { color: #7a1c20; }

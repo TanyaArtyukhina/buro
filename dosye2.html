@@ -160,7 +160,8 @@
                         <h2 class="ds-head">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 3v18M7 21h10M4 7h16M4 7l-2.5 6a3 3 0 0 0 5 0L4 7ZM20 7l-2.5 6a3 3 0 0 0 5 0L20 7Z" />
+                                <path
+                                    d="M12 3v18M7 21h10M4 7h16M4 7l-2.5 6a3 3 0 0 0 5 0L4 7ZM20 7l-2.5 6a3 3 0 0 0 5 0L20 7Z" />
                             </svg>
                             Первое впечатление и итоговый вердикт
                         </h2>
@@ -309,24 +310,24 @@
         const TRICKS = [{"key": "dopros2a", "fid": "post_hoc", "witness": "Марина Орехова", "type": "Суевер", "fallacy": "После этого — значит вследствие этого", "phrase": "«Сначала он ходил, потом стекло разбилось, значит, это он»"}, {"key": "dopros2b", "fid": "false_dilemma", "witness": "Семён Дроздов", "type": "Шантажист выбора", "fallacy": "Ложная дилемма", "phrase": "«Либо подросток, либо никто — других вариантов нет»"}];
 
         const SIFT_STEPS = [
-            { key: 'stop', name: 'Стоп', done: 'Остановились и оценили улики, а не поверили сразу.', miss: 'Не остановились, чтобы оценить улики по отдельности.' },
-            { key: 'source', name: 'Изучи источник', done: 'Изучили досье свидетелей: компетентность и интерес.', miss: 'Не изучили, кто именно говорит и зачем.' },
-            { key: 'others', name: 'Найди другие источники', done: 'Запросили дополнительные сведения.', miss: 'Не искали альтернативные источники.' },
-            { key: 'trace', name: 'Проследи до первоисточника', done: 'Дошли до документа или оригинальной записи.', miss: 'Не добрались до документов — опирались на пересказы.' }
+            {key: 'stop', name: 'Стоп', done: 'Остановились и оценили улики, а не поверили сразу.', miss: 'Не остановились, чтобы оценить улики по отдельности.'},
+            {key: 'source', name: 'Изучи источник', done: 'Изучили досье свидетелей: компетентность и интерес.', miss: 'Не изучили, кто именно говорит и зачем.'},
+            {key: 'others', name: 'Найди другие источники', done: 'Запросили дополнительные сведения.', miss: 'Не искали альтернативные источники.'},
+            {key: 'trace', name: 'Проследи до первоисточника', done: 'Дошли до документа или оригинальной записи.', miss: 'Не добрались до документов — опирались на пересказы.'}
         ];
 
         /* ===== СОСТОЯНИЕ ===== */
         const read = key => JSON.parse(localStorage.getItem(key) || 'null');
         const load = (key, def) => Object.assign({}, def, read(key) || {});
 
-        const game = load('kartoteka2', { hoursSpent: 0, got: ['note'], reviewed: false });
-        game.sift = Object.assign({ stop: false, source: false, others: false, trace: false }, game.sift);
-        const verdict = load('verdict2', { history: {}, closed: false, result: null });
+        const game = load('kartoteka2', {hoursSpent: 0, got: ['note'], reviewed: false});
+        game.sift = Object.assign({stop: false, source: false, others: false, trace: false}, game.sift);
+        const verdict = load('verdict2', {history: {}, closed: false, result: null});
         const campaign = load('campaign', {
             reputation: START_REP, carryHours: 0,
-            stats: { correct: 0, wrong: 0, judicialErrors: 0, closed: [] }
+            stats: {correct: 0, wrong: 0, judicialErrors: 0, closed: []}
         });
-        campaign.stats = Object.assign({ correct: 0, wrong: 0, judicialErrors: 0, closed: [] }, campaign.stats);
+        campaign.stats = Object.assign({correct: 0, wrong: 0, judicialErrors: 0, closed: []}, campaign.stats);
         // первое впечатление (экран «Дело»): { choice, P }
         const delo = read('delo2') || {};
 
@@ -350,13 +351,13 @@
         // из экрана «Дело»; если его нет — по первой оценке на экране вердикта
         function firstImpression() {
             const fi = delo.firstImpression;
-            if (fi && fi.choice) return { choice: fi.choice, P: fi.P ?? null, src: 'интуитивный ответ за 15 секунд' };
+            if (fi && fi.choice) return {choice: fi.choice, P: fi.P ?? null, src: 'интуитивный ответ за 15 секунд'};
 
             const first = obtained().find(e => verdict.history[e.id] != null);
-            if (!first) return { choice: null, P: null, src: 'не отмечено' };
+            if (!first) return {choice: null, P: null, src: 'не отмечено'};
             const val = verdict.history[first.id];
             const choice = val > 50 ? 'confirmed' : val < 50 ? 'refuted' : 'insufficient';
-            return { choice, P: Math.max(val, 100 - val), src: 'по первой оценке улики' };
+            return {choice, P: Math.max(val, 100 - val), src: 'по первой оценке улики'};
         }
 
         /* ===== КАРТОЧКИ ===== */
@@ -431,7 +432,7 @@
             list.forEach((e, i) => {
                 out += `<text class="axis" x="${x(i)}" y="${H - 6}" text-anchor="middle">${i + 1}</text>`;
             });
-            const pts = list.map((e, i) => ({ i, v: verdict.history[e.id] })).filter(p => p.v != null);
+            const pts = list.map((e, i) => ({i, v: verdict.history[e.id]})).filter(p => p.v != null);
             if (pts.length) {
                 out += `<polyline class="line" points="${pts.map(p => `${x(p.i)},${y(p.v)}`).join(' ')}"/>`;
                 out += pts.map(p => `<circle class="pt" cx="${x(p.i)}" cy="${y(p.v)}" r="3.5"/>`).join('');
@@ -460,7 +461,7 @@
         }
 
         function renderBiases(r) {
-            const BIASES = [{"name": "Предвзятость подтверждения", "cond": "rev", "ok": "Вы открыли улики против версии владельца.", "warn": "Улики против версии владельца остались свёрнутыми. Искали подтверждения.", "na": null}, {"name": "Эффект якоря", "cond": "wrong", "ok": "Вы не дали цифре 12 000 ₽ определить оценку улик.", "warn": "Названная сумма 12 000 ₽ задала точку отсчёта: улики оценивались через эту цифру.", "na": null}, {"name": "Предвзятость текущего момента", "cond": "hours", "ok": "Не спешили: время ушло на сбор улик.", "warn": "Закрыли дело с запасом часов, не запросив документов.", "na": null}, {"name": "Ошибка выжившего", "cond": "na", "ok": null, "warn": null, "na": "В этом деле не встречалась — проявится в деле №3."}];
+            const BIASES = [{"name": "Предвзятость подтверждения", "cond": "rev", "ok": "Вы открыли улики против версии владельца.", "warn": "Улики против версии владельца остались свёрнутыми. Искали подтверждения.", "na": null}, {"name": "Эффект якоря", "cond": "anchor", "ok": "Ваша оценка ущерба не привязалась к названной сумме 12 000 ₽.", "warn": "Ваша оценка ущерба оказалась ближе к названным 12 000 ₽, чем к реальным 4 800 ₽: цифра владельца задала точку отсчёта.", "na": null}, {"name": "Предвзятость текущего момента", "cond": "hours", "ok": "Не спешили: время ушло на сбор улик.", "warn": "Закрыли дело с запасом часов, не запросив документов.", "na": null}, {"name": "Ошибка выжившего", "cond": "na", "ok": null, "warn": null, "na": "В этом деле не встречалась — проявится в деле №3."}];
             const got = obtained();
             const contraGot = got.filter(e => e.contra).length;
             const missedDocs = EVIDENCE.filter(e => e.rel === 4 && !got.includes(e)).length;
@@ -471,10 +472,12 @@
                 else if (b.cond === 'wrong') warn = !r.correct;
                 else if (b.cond === 'hours') warn = hoursLeft >= 3 && missedDocs > 0;
                 else if (b.cond.startsWith('need:')) warn = !got.some(e => e.id === b.cond.slice(5));
+                else if (b.cond === 'anchor') warn = game.estimate == null ||
+                    Math.abs(game.estimate - 12000) < Math.abs(game.estimate - 4800);
                 const na = b.cond === 'na';
-                return { s: na ? 'na' : warn ? 'warn' : 'ok', name: b.name, note: na ? b.na : warn ? b.warn : b.ok };
+                return {s: na ? 'na' : warn ? 'warn' : 'ok', name: b.name, note: na ? b.na : warn ? b.warn : b.ok};
             });
-            const icon = { ok: '<span class="mark mark--ok">✓</span>', warn: '<span class="mark mark--warn">!</span>', na: '<span class="mark mark--na">–</span>' };
+            const icon = {ok: '<span class="mark mark--ok">✓</span>', warn: '<span class="mark mark--warn">!</span>', na: '<span class="mark mark--na">–</span>'};
             $('biasList').innerHTML = items.map(i =>
                 `<li>${icon[i.s]}<div><b>${i.name}</b><small>${i.note}</small></div></li>`).join('');
             $('biasCount').textContent = `сработало: ${items.filter(i => i.s === 'warn').length}`;
@@ -528,10 +531,10 @@
             $('modal').hidden = false;
             $('mCancel').focus();
         });
-        $('mCancel').addEventListener('click', () => { $('modal').hidden = true; });
+        $('mCancel').addEventListener('click', () => {$('modal').hidden = true;});
         $('mOk').addEventListener('click', replayCase);
-        $('modal').addEventListener('click', e => { if (e.target.id === 'modal') $('modal').hidden = true; });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') $('modal').hidden = true; });
+        $('modal').addEventListener('click', e => {if (e.target.id === 'modal') $('modal').hidden = true;});
+        document.addEventListener('keydown', e => {if (e.key === 'Escape') $('modal').hidden = true;});
 
         /* ===== СТАРТ ===== */
         renderHeader();
@@ -553,7 +556,7 @@
             renderSummary(r);
         }
     </script>
-<script>(function(){var b=document.querySelector(".btn-close");if(b)b.addEventListener("click",function(){if(confirm("Перейти к вердикту?"))location.href="./verdict2.html";});})();</script>
+    <script>(function () {var b = document.querySelector(".btn-close"); if (b) b.addEventListener("click", function () {if (confirm("Перейти к вердикту?")) location.href = "./verdict2.html";});})();</script>
 </body>
 
 </html>
